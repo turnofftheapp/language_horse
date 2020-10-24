@@ -1,5 +1,5 @@
 .slick-dots {
-	top: 15px;
+	top: 5px;
 	bottom: auto;
 }
 
@@ -28,7 +28,7 @@
 }
 
 .slick-slide {
-	padding: 55px 16px 16px 16px;
+	padding: 45px 20px 20px 20px;
 	outline: 0;
 }
 

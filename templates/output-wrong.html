@@ -17,7 +17,7 @@
     />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}" />
   </head>
 
   <body>
@@ -48,8 +48,8 @@
             </div>
 				</div>
 				<div class="text-center mg-b-30">
-          <a href="input.html" class="btn btn-primary mg-r-15">Start Over</a>
-          <a href="input.html" class="btn btn-primary mg-l-15">Try Again</a>
+          <a href="{{url_for('home')}}" class="btn btn-primary mg-r-15">Start Over</a>
+          <a href="{{url_for('home')}}" class="btn btn-primary mg-l-15">Try Again</a>
 				</div>
 			</div>
 		</div>

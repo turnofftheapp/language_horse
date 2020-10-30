@@ -17,7 +17,7 @@
     />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}" />
   </head>
 
   <body class="app-fullscreen">
@@ -41,7 +41,7 @@
           </div>
 				</div>
 				<div class="output-footer text-center">
-					<a href="input.html" class="btn btn-primary">Try Again</a>
+					<a href="{{url_for('home')}}" class="btn btn-primary">Try Again</a>
 				</div>
 			</div>
 		</div>

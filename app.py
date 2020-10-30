@@ -1,4 +1,6 @@
 from flask import Flask, render_template, url_for
+import random
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -13,4 +15,8 @@ def view_abc():
 
 @app.route('/win')
 def win_or_loose():
-    return render_template('output-wrong.html')
+    flip = random.randint(0, 1)
+    if flip:
+        return render_template('output-wrong.html')
+    else:
+        return render_template('output-correct.html')

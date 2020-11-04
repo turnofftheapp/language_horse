@@ -8,9 +8,9 @@ import pickle
 with open('langpairs.csv', 'r') as read_obj:
     # pass the file object to reader() to get the reader object
     csv_reader = reader(read_obj)
-    # Pass reader object to list() to get a list of lists
-    list_of_rows = list(csv_reader)
-    print(list_of_rows)
+    # Get all rows of csv from csv_reader object as list of tuples
+    list_of_tuples = list(map(tuple, csv_reader))
+    print(list_of_tuples)
 
 # Save list_of_rows into a pickle file.
-pickle.dump(list_of_rows, open("save.p","wb"))
+pickle.dump(list_of_tuples, open("save.p","wb"))

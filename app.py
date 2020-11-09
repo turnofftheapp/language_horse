@@ -3,7 +3,7 @@ import random
 import pickle
 
 # Import the pickle file which contains the langauge pairs
-infile = open('save.p','rb')
+infile = open('languages_pickle','rb')
 langs = pickle.load(infile)
 infile.close()
 

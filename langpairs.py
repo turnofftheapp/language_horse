@@ -10,7 +10,10 @@ with open('langpairs.csv', 'r') as read_obj:
     csv_reader = reader(read_obj)
     # Get all rows of csv from csv_reader object as list of tuples
     list_of_tuples = list(map(tuple, csv_reader))
+    
+    # Remove the first element
+    list_of_tuples.pop(0)
     print(list_of_tuples)
 
 # Save list_of_rows into a pickle file.
-pickle.dump(list_of_tuples, open("save.p","wb"))
+pickle.dump(list_of_tuples, open("languages_pickle","wb"))

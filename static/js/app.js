@@ -12,6 +12,10 @@ $( "#translate_next" ).click(function() {
   translateFromLangCode = $("#ddl_lang_from :selected").attr('label')
   translateToLangCode = $("#ddl_lang_to :selected").attr('label')
 
+  // Change the text of the badges based on previous codes
+  $('#translate-from-label').text(translateFromLang);
+  $('#translate-to-label').text(translateToLang);
+
 });
 
 

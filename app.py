@@ -13,13 +13,14 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-#@app.route('/translate/<string:transate_from_code>/<string:transate_to_code>/<string:L1_word>', methods=['GET', 'POST'])
-#def translate(transate_from_code, translate_to_code, L1_word):
-#	return "Hola Mundo"
-
-@app.route('/translate/', methods=['GET', 'POST'])
-def translate():
+@app.route('/translate/<string:transate_from_code>/<string:translate_to_code>/<string:L1_word>', methods=['GET', 'POST'])
+def translate(transate_from_code, translate_to_code, L1_word):
+	print(transate_from_code)
+	print(translate_to_code)
+	print(L1_word)
 	return "Hola Mundo"
+
+
 
 
 @app.route('/input')

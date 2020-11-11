@@ -21,7 +21,10 @@ $( "#translate_next" ).click(function() {
 // When you hit the translate button we should make an AJAX
 $( "#translate-button" ).click(function() {
   // Placeholder code for button, we will put ajax call here
-  alert("Transte button pressed");
+  $.ajax({url: "/translate", success: function(result) {
+    console.log(result);
+    $("#L2-target-word").text(result);
+  }});
 });
 
 

@@ -4,6 +4,7 @@ var translateToLang = ""
 var translateFromLangCode = "";
 var translateToLangCode = "";
 var targetL1Word = "";
+var placeHolderMessagem = "";
 
 // Se the default value as English
 $('#ddl_lang_from').val('English (US)')
@@ -19,6 +20,10 @@ $( "#translate_next" ).click(function() {
   // Change the text of the badges based on previous codes
   $('.translate-from-label').text(translateFromLang);
   $('.translate-to-label').text(translateToLang);
+
+  // Embed translate from variable into custom language message for L1 Input Text Box placeholder
+  placeHolderMessage = "Type your word in " + translateFromLang + " here..."
+  $("#L1-input-text-box").attr("placeholder", placeHolderMessage).val("").focus().blur();
 
 });
 

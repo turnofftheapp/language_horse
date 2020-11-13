@@ -5,6 +5,9 @@ var translateFromLangCode = "";
 var translateToLangCode = "";
 var targetL1Word = "";
 
+// Se the default value as English
+$('#ddl_lang_from').val('English (US)')
+
 // When you select languages, and click the next button
 $( "#translate_next" ).click(function() {
   // Grab the langauge data from the UI

@@ -7,10 +7,12 @@ import re
 import pdb
 import json
 
-
-
 # Get the google API key from an environment variable
-google_api_key = os.environ['GOOGLE_API_KEY']
+GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']
+
+GOOGLE_TRANSLATE_ENDPOINT = "https://translation.googleapis.com/language/translate/v2"
+
+GOOGLE_TRANSLATE_ENDPOINT_WITH_KEY = GOOGLE_TRANSLATE_ENDPOINT + "?key=" + GOOGLE_API_KEY
 
 # Import the pickle file which contains the langauge pairs
 infile = open('languages_pickle','rb')
@@ -30,23 +32,17 @@ def translate(transate_from_code, translate_to_code, L1_word):
 	translate_from_code_no_suffix = re.sub(r'-..$', '', transate_from_code)
 	translate_to_code_no_suffix = re.sub(r'-..$', '', translate_to_code)
 
-	# Make a request to the google api key
-	url = "https://translation.googleapis.com/language/translate/v2?key={}".format(google_api_key)
 	
-	#pdb.set_trace()
-
-	payload = {"q": L1_word,
+	
+	# Payload for translation api
+	google_translate_payload = {"q": L1_word,
 			   "source": translate_from_code_no_suffix,
 			   "target": translate_to_code_no_suffix,
 			   "type": "text"}
 
-	headers = {
-  		'Content-Type': 'application/json'
-	}
-
-	response = requests.request("POST", url, headers=headers, json = payload)
-	parsed_response = response.json()
-	L2_Target_Word = parsed_response['data']['translations'][0]['translatedText']
+	
+	translation_results = make_api_request(GOOGLE_TRANSLATE_ENDPOINT_WITH_KEY, google_translate_payload, method='POST')
+	L2_Target_Word = translation_results['data']['translations'][0]['translatedText']
 
 	return L2_Target_Word
 
@@ -62,3 +58,13 @@ def win_or_loose():
         return render_template('output-wrong.html')
     else:
         return render_template('output-correct.html')
+
+def make_api_request(url, payload, method):
+
+	headers = {
+  		'Content-Type': 'application/json'
+	}
+
+	response = requests.request(method, url, headers=headers, json = payload)
+	
+	return response.json()

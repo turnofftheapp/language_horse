@@ -45,6 +45,8 @@ $( "#translate-button" ).click(function() {
 
     // Update the global variable of the base 64 audio string
     rawBase64AudioString = result["target_audio"]
+
+    $('#carousel').slick('slickGoTo', 2)
     
     
   }});

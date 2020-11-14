@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, jsonify
 import random
 import pickle
 import requests
@@ -51,9 +51,9 @@ def translate(transate_from_code, translate_to_code, L1_word):
 
 	
 	# Payload for translation api
-	google_speech_to_text_payload = {
+	google_text_to_speech_payload = {
   		"input": {
-    		"text": "Max"
+    		"text": "Max is my friend"
   		},
  		"voice": {
     		"languageCode": "en-US",
@@ -68,14 +68,19 @@ def translate(transate_from_code, translate_to_code, L1_word):
 	}
 
 
-	audio_results = make_api_request(GOOGLE_TEXT_TO_SPEECH_ENDPOINT_WITH_KEY, google_text_to_speech_payload, method='POST')
+	audio_results = make_api_request(GOOGLE_TEXT_TO_SPEECH_ENDPOINT_WITH_KEY,
+									 google_text_to_speech_payload,
+									 method='POST')
 
-	print("********AUDIO:::::")
-	print(audio_results)
 
-	pdb.set_trace()
+	# Extract the string that we are going to play
+	base_64_audio_string = audio_results['audioContent']
 
-	return L2_Target_Word
+	#pdb.set_trace()
+
+	# Return a JSON response with flask::jsonify to browser
+	return jsonify({"target_word": L2_Target_Word,
+					"target_audio": base_64_audio_string})
 
 @app.route('/input')
 def view_abc():

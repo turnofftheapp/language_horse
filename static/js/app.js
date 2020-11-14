@@ -66,7 +66,3 @@ $( "#hear-pronunciation-button" ).click(function() {
   
 
 });
-
-
-
-

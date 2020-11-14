@@ -47,9 +47,12 @@ $( "#translate-button" ).click(function() {
     // Update the translate_to box with the result
     $("#L2-target-word").text(result);
     
-    // Update the transalated_from box with the target L1 word
-    $("#L1-target-word").text(targetL1Word);
+    
   }});
+
+  // Update the transalated_from box with the target L1 word
+  $("#L1-target-word").text(targetL1Word);
+
 });
 
 // When you hit the translate button we should make an AJAX 

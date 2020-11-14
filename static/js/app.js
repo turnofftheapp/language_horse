@@ -39,9 +39,6 @@ $( "#translate-button" ).click(function() {
 
 
   $.ajax({url: translateURL, success: function(result) {
-    // Print out the resulting data for testing purposes, remove later
-    console.log("********")
-    console.log(result);
     
     // Update the translate_to box with the result
     $("#L2-target-word").text(result["target_word"]);
@@ -63,6 +60,5 @@ $( "#hear-pronunciation-button" ).click(function() {
   // https://stackoverflow.com/a/17762789/5420796
   var L2Audio = new Audio("data:audio/wav;base64," + rawBase64AudioString)
   L2Audio.play()
-  
 
 });

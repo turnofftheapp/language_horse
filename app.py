@@ -6,6 +6,7 @@ import os
 import re
 import pdb
 import json
+import pdb
 
 # Get the google API key from an environment variable
 GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']
@@ -13,6 +14,10 @@ GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']
 GOOGLE_TRANSLATE_ENDPOINT = "https://translation.googleapis.com/language/translate/v2"
 
 GOOGLE_TRANSLATE_ENDPOINT_WITH_KEY = GOOGLE_TRANSLATE_ENDPOINT + "?key=" + GOOGLE_API_KEY
+
+GOOGLE_TEXT_TO_SPEECH_ENDPOINT = "https://texttospeech.googleapis.com/v1/text:synthesize"
+
+GOOGLE_TEXT_TO_SPEECH_ENDPOINT_WITH_KEY = GOOGLE_TEXT_TO_SPEECH_ENDPOINT + "?key=" + GOOGLE_API_KEY
 
 # Import the pickle file which contains the langauge pairs
 infile = open('languages_pickle','rb')
@@ -44,6 +49,32 @@ def translate(transate_from_code, translate_to_code, L1_word):
 	translation_results = make_api_request(GOOGLE_TRANSLATE_ENDPOINT_WITH_KEY, google_translate_payload, method='POST')
 	L2_Target_Word = translation_results['data']['translations'][0]['translatedText']
 
+	
+	# Payload for translation api
+	google_speech_to_text_payload = {
+  		"input": {
+    		"text": "Max"
+  		},
+ 		"voice": {
+    		"languageCode": "en-US",
+  			"name": "en-US-Wavenet-C",
+  			"ssmlGender": "FEMALE"
+  		},
+  		"audioConfig": {
+    		"audioEncoding": "MP3",
+  			"speakingRate": 2,
+  			"pitch": 0,
+  		}
+	}
+
+
+	audio_results = make_api_request(GOOGLE_TEXT_TO_SPEECH_ENDPOINT_WITH_KEY, google_text_to_speech_payload, method='POST')
+
+	print("********AUDIO:::::")
+	print(audio_results)
+
+	pdb.set_trace()
+
 	return L2_Target_Word
 
 @app.route('/input')
@@ -60,6 +91,8 @@ def win_or_loose():
         return render_template('output-correct.html')
 
 def make_api_request(url, payload, method):
+
+	# TODO: ADD ERROR HANDLING TO THIS METHOD
 
 	headers = {
   		'Content-Type': 'application/json'

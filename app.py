@@ -53,16 +53,17 @@ def translate(transate_from_code, translate_to_code, L1_word):
 	# Payload for translation api
 	google_text_to_speech_payload = {
   		"input": {
-    		"text": "Max is my friend"
+    		"text": L2_Target_Word
   		},
  		"voice": {
-    		"languageCode": "en-US",
-  			"name": "en-US-Wavenet-C",
+    		"languageCode": translate_to_code,
+    		# TODO SPECIFY THE NAME OF THE VOICE WE ARE GOING TO USE
+  			#"name": "en-US-Wavenet-C",
   			"ssmlGender": "FEMALE"
   		},
   		"audioConfig": {
     		"audioEncoding": "MP3",
-  			"speakingRate": 2,
+  			"speakingRate": 1,
   			"pitch": 0,
   		}
 	}

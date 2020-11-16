@@ -6,7 +6,6 @@ import os
 import re
 import pdb
 import json
-import pdb
 
 # Get the google API key from an environment variable
 GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']
@@ -76,8 +75,6 @@ def translate(transate_from_code, translate_to_code, L1_word):
 
 	# Extract the string that we are going to play
 	base_64_audio_string = audio_results['audioContent']
-
-	#pdb.set_trace()
 
 	# Return a JSON response with flask::jsonify to browser
 	return jsonify({"target_word": L2_Target_Word,

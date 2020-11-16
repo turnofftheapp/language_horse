@@ -104,3 +104,6 @@ def make_api_request(url, payload, method):
 	response = requests.request(method, url, headers=headers, json = payload)
 	
 	return response.json()
+
+if __name__ == '__main__':
+    app.run()

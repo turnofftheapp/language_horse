@@ -1,7 +1,9 @@
 ﻿Language,BCP - 47
 Arabic (Egyptian),ar-EG
 Bengali (India),bn-IN
-Chinese (Mandarin),cmn-CN
+Chinese (Mandarin cmn-CN),cmn-CN
+Chinese (Mandarin zh-CN),zh-CN
+Chinese (Mandarin cmn-Hans-CN),cmn-Hans-CN
 Czech (Czech Republic),cs-CZ
 Danish (Denmark),da-DK
 Dutch (Netherlands),nl-NL

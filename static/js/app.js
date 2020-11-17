@@ -24,6 +24,14 @@ $( "#hear-pronunciation-button" ).click(function() {
   hearAudio();
 });
 
+$( "#record-button" ).click(function() {
+  recordAudio();
+});
+
+var recordAudio = () => {
+  console.log("This is where you will record audio");
+};
+
 var selectLanguages = () => {
   // Grab the langauge data from the UI
   translateFromLang = $("#ddl_lang_from :selected").text();

@@ -29,7 +29,9 @@ $( "#record-button" ).click(function() {
 });
 
 var recordAudio = () => {
-  console.log("This is where you will record audio");
+  if (navigator.mediaDevices.getUserMedia) {
+    alert('getUserMedia supported.');
+  };
 };
 
 var selectLanguages = () => {

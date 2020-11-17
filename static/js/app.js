@@ -7,11 +7,24 @@ var targetL1Word = "";
 var placeHolderMessagem = "";
 var rawBase64AudioString = "";
 
-// Se the default value as English
+// Set the default value as English in the drop down
 $('#ddl_lang_from').val('English (US)')
 
-// When you select languages, and click the next button
+
+// Use JQUERY to bind click events to the functions below
 $( "#translate_next" ).click(function() {
+  selectLanguages();
+})
+
+$( "#translate-button" ).click(function() {
+  translateLanguages();
+})
+
+$( "#hear-pronunciation-button" ).click(function() {
+  hearAudio();
+});
+
+var selectLanguages = () => {
   // Grab the langauge data from the UI
   translateFromLang = $("#ddl_lang_from :selected").text();
   translateToLang = $("#ddl_lang_to :selected").text();
@@ -25,12 +38,10 @@ $( "#translate_next" ).click(function() {
   // Embed translate from variable into custom language message for L1 Input Text Box placeholder
   placeHolderMessage = "Type your word in " + translateFromLang + " here..."
   $("#L1-input-text-box").attr("placeholder", placeHolderMessage).val("").focus().blur();
+};
 
-});
+var translateLanguages = () => {
 
-// When you hit the translate button we should make an AJAX 
-$( "#translate-button" ).click(function() {
-  
   // Get the word from the text box
   targetL1Word = $('#L1-input-text-box').val();
 
@@ -54,13 +65,12 @@ $( "#translate-button" ).click(function() {
   // Update the transalated_from box with the target L1 word
   $("#L1-target-word").text(targetL1Word);
 
-});
+};
 
-// When you hit the translate button we should make an AJAX 
-$( "#hear-pronunciation-button" ).click(function() {
-  
+var hearAudio = () => {
+
   // https://stackoverflow.com/a/17762789/5420796
   var L2Audio = new Audio("data:audio/wav;base64," + rawBase64AudioString)
   L2Audio.play()
 
-});
+}

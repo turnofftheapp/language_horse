@@ -30,10 +30,8 @@ $( "#record-button" ).click(function() {
 
 var recordAudio = () => {
   if (navigator.mediaDevices.getUserMedia) {
-    alert('getUserMedia supported.');
     $('#record-button').css('color','green');
   } else {
-    alert('getUserMedia is not supported');
     $('#record-button').css('color','yellow');
   }
 };

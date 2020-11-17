@@ -31,7 +31,9 @@ $( "#record-button" ).click(function() {
 var recordAudio = () => {
   if (navigator.mediaDevices.getUserMedia) {
     alert('getUserMedia supported.');
-  };
+  } else {
+    alert('getUserMedia is not supported');
+  }
 };
 
 var selectLanguages = () => {

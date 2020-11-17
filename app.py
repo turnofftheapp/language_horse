@@ -61,7 +61,7 @@ def translate(transate_from_code, translate_to_code, L1_word):
   			"ssmlGender": "FEMALE"
   		},
   		"audioConfig": {
-    		"audioEncoding": "MP3",
+    		"audioEncoding": "LINEAR16",
   			"speakingRate": 1,
   			"pitch": 0,
   		}

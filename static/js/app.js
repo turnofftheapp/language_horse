@@ -30,6 +30,9 @@ $( "#hear-pronunciation-button" ).click(function() {
   hearAudio();
 });
 
+$( "#submit-button" ).click(function() {
+  hearL2Audio();
+});
 
 if (navigator.mediaDevices.getUserMedia) {
   console.log('getUserMedia supported.');
@@ -60,7 +63,6 @@ if (navigator.mediaDevices.getUserMedia) {
     mediaRecorder.onstop = function(e) {
       
       // Create the audio blob
-      const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
       const blob = new Blob(chunks, { 'type' : 'audio/wav; codecs=0' });
       console.log("Here is the blob")
       console.log(blob)
@@ -94,7 +96,13 @@ if (navigator.mediaDevices.getUserMedia) {
    console.log('getUserMedia not supported on your browser!');
 }
 
+var hearL2Audio = () => {
 
+  // https://stackoverflow.com/a/17762789/5420796
+  var targetL2Audio = new Audio("data:audio/wav;base64," + userL2Recording)
+  targetL2Audio.play()
+
+}
 
 var selectLanguages = () => {
   // Grab the langauge data from the UI

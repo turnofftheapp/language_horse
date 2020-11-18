@@ -98,6 +98,7 @@ if (navigator.mediaDevices.getUserMedia) {
 
 var hearL2Audio = () => {
 
+  alert("Close this box to here the audio that you created")
   // https://stackoverflow.com/a/17762789/5420796
   var targetL2Audio = new Audio("data:audio/wav;base64," + userL2Recording)
   targetL2Audio.play()

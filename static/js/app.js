@@ -6,6 +6,11 @@ var translateToLangCode = "";
 var targetL1Word = "";
 var placeHolderMessagem = "";
 var rawBase64AudioString = "";
+var currentlyRecording = false;
+
+// Connect to the record button
+const record = document.querySelector('#record-button');
+
 
 // Set the default value as English in the drop down
 $('#ddl_lang_from').val('English (US)')
@@ -24,17 +29,81 @@ $( "#hear-pronunciation-button" ).click(function() {
   hearAudio();
 });
 
-$( "#record-button" ).click(function() {
-  recordAudio();
-});
+// PHASE OUT TO DELETE THIS 1/1
+// I HAD SCOPING ISSUES THIS WAY
+//$( "#record-button" ).click(function() {
+//  if (!currentlyRecording) {
+//    recordAudio();
+//  } else {
+//    stopRecording();
+//  }
+//  
+//});
 
-var recordAudio = () => {
-  if (navigator.mediaDevices.getUserMedia) {
-    $('#record-button').css('color','green');
+if (navigator.mediaDevices.getUserMedia) {
+    console.log('getUserMedia supported.');
+
+    navigator.mediaDevices.getUserMedia (
+      // constraints - only audio needed for this app
+      {
+         audio: true
+      })
+
+      // Success callback
+      .then(function(stream) {
+
+        let chunks = [];
+        var mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.ondataavailable = function(e) {
+          chunks.push(e.data);
+          console.log(e.data);
+        }
+
+        record.onclick = function() {
+          if (!currentlyRecording) { 
+            mediaRecorder.start();
+            console.log(mediaRecorder.state);
+            console.log("recorder started");
+            currentlyRecording = true;
+          } else {
+            console.log("Stopping media recording")
+            mediaRecorder.stop();
+            currentlyRecording = false;
+          }
+        
+        }
+ 
+        
+      })
+
+      // Error callback
+      .catch(function(err) {
+         console.log('The following getUserMedia error occured: ' + err);
+      }
+   );
+
   } else {
-    $('#record-button').css('color','yellow');
+    console.log('getUserMedia not supported on this device');
+    alert("Your device does not support the HTML5 recording functionality")
   }
-};
+
+
+// I HAD SCOPING ISSUES THIS WAY
+//var stopRecording = () => {
+//  console.log("Recording Stopped")
+//  mediaRecorder.stop();
+//  $('#record-button').css('color','red');
+//  currentlyRecording = false;
+//
+//}
+//
+//var recordAudio = () => {
+//  console.log("Starting Recording")
+//  mediaRecorder.start();
+//  $('#record-button').css('color','green');
+//  currentlyRecording = true;
+//}
 
 var selectLanguages = () => {
   // Grab the langauge data from the UI

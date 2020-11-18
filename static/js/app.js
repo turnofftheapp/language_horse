@@ -64,8 +64,6 @@ if (navigator.mediaDevices.getUserMedia) {
       
       // Create the audio blob
       const blob = new Blob(chunks, { 'type' : 'audio/wav; codecs=0' });
-      console.log("Here is the blob")
-      console.log(blob)
 
       // Clear out chunks
       chunks = [];

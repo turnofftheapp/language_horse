@@ -7,6 +7,7 @@ var targetL1Word = "";
 var placeHolderMessagem = "";
 var rawBase64AudioString = "";
 var currentlyRecording = false;
+var userL2Recording = "";
 
 // Connect to the record button
 const record = document.querySelector('#record-button');
@@ -60,11 +61,22 @@ if (navigator.mediaDevices.getUserMedia) {
       
       // Create the audio blob
       const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+      const blob = new Blob(chunks, { 'type' : 'audio/wav; codecs=0' });
       console.log("Here is the blob")
       console.log(blob)
 
       // Clear out chunks
       chunks = [];
+
+      // Convert the blob to a base 64 string
+      // See: https://stackoverflow.com/a/18650249/5420796
+      var reader = new FileReader();
+      reader.readAsDataURL(blob); 
+      reader.onloadend = function() {
+      var base64data = reader.result;                
+        // Add the raw base64 string to the top
+        userL2Recording = base64data.substr(base64data.indexOf(',')+1)
+      }
     }
 
     mediaRecorder.ondataavailable = function(e) {

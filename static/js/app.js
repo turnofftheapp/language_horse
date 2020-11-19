@@ -112,6 +112,19 @@ var selectLanguages = () => {
   translateFromLangCode = $("#ddl_lang_from :selected").attr('label');
   translateToLangCode = $("#ddl_lang_to :selected").attr('label');
 
+  // Validation: Check to make sure the languages are not the same
+  if (translateFromLang == translateToLang) {
+    alert("You must select different languages")
+    return
+  }
+
+  // Validation: Check to make sure that
+  if (!translateFromLang || !translateToLang) {
+    alert("You must select a \"Translate From\" and a \"Translate To\" method")
+    return
+
+  }
+
   // Change the text of the badges based on previous codes
   $('.translate-from-label').text(translateFromLang);
   $('.translate-to-label').text(translateToLang);
@@ -119,6 +132,8 @@ var selectLanguages = () => {
   // Embed translate from variable into custom language message for L1 Input Text Box placeholder
   placeHolderMessage = "Type your word in " + translateFromLang + " here..."
   $("#L1-input-text-box").attr("placeholder", placeHolderMessage).val("").focus().blur();
+
+  $('#carousel').slick('slickGoTo', 1)
 };
 
 var translateLanguages = () => {

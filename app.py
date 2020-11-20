@@ -30,6 +30,12 @@ infile.close()
 
 app = Flask(__name__)
 
+
+@app.route('/raw-pcm')
+def raw_pcm():
+    return render_template('raw-pcm.html')
+
+
 @app.route('/score/<string:translate_to_code>/<string:L2TargetWord>', methods=['GET', 'POST'])
 def score(translate_to_code, L2TargetWord):
 

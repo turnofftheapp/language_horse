@@ -18,6 +18,11 @@ GOOGLE_TEXT_TO_SPEECH_ENDPOINT = "https://texttospeech.googleapis.com/v1/text:sy
 
 GOOGLE_TEXT_TO_SPEECH_ENDPOINT_WITH_KEY = GOOGLE_TEXT_TO_SPEECH_ENDPOINT + "?key=" + GOOGLE_API_KEY
 
+GOOGLE_SPEECH_TO_TEXT_ENDPOINT = 'https://speech.googleapis.com/v1/speech:recognize'
+
+GOOGLE_SPEECH_TO_TEXT_ENDPOINT_WITH_KEY = GOOGLE_SPEECH_TO_TEXT_ENDPOINT + "?key=" + GOOGLE_API_KEY
+
+
 # Import the pickle file which contains the langauge pairs
 infile = open('languages_pickle','rb')
 langs = pickle.load(infile)
@@ -30,7 +35,25 @@ def score(translate_to_code, L2TargetWord):
 
 	# Get the audio data from the repsonse object
 	user_L2_recording = request.args['userL2Recording']
-		
+	
+	# Payload for translation api
+	google_speech_to_text_payload = {
+		"config": {
+      		"encoding":"LINEAR16",
+      		"sampleRateHertz": 16000,
+      		"languageCode": "en-US",
+      		"enableWordTimeOffsets": False
+  		},
+  		"audio": user_L2_recording
+  	}
+	
+	speech_recognition_result = make_api_request(GOOGLE_SPEECH_TO_TEXT_ENDPOINT_WITH_KEY,
+									 google_speech_to_text_payload,
+									 method='POST')
+
+
+	import pdb; pdb.set_trace()
+
 	return "Hello World"
 
 @app.route('/')

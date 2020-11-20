@@ -25,6 +25,18 @@ infile.close()
 
 app = Flask(__name__)
 
+@app.route('/score/<string:translate_to_code>/<string:L2TargetWord>', methods=['GET', 'POST'])
+def score(translate_to_code, L2TargetWord):
+
+	print("Checking URL Parameters")
+	print("Translate to code:  ")
+	print(translate_to_code)
+	print("Translate to code:  ")
+	print(L2TargetWord)
+	
+	
+	return "Hello World"
+
 @app.route('/')
 def home():
     return render_template('index.html')

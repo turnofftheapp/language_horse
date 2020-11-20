@@ -32,7 +32,10 @@ $( "#hear-pronunciation-button" ).click(function() {
 });
 
 $( "#submit-button" ).click(function() {
-  hearL2Audio();
+  // This method we should keep for testing purposes
+  // hearL2Audio();
+  submitAnswer();
+  
 });
 
 if (navigator.mediaDevices.getUserMedia) {
@@ -96,6 +99,28 @@ if (navigator.mediaDevices.getUserMedia) {
 } else {
    console.log('getUserMedia not supported on your browser!');
 }
+
+var submitAnswer = () => {
+
+  // Make sure that there is an L2 recording
+  if (!userL2Recording) {
+    alert("You must record somet")
+    return
+  }
+
+  scoreURL = '/score' + '/'  + translateToLangCode + '/' + L2TargetWord
+
+
+  $.ajax({url: scoreURL,
+          data: {"userL2Recording": userL2Recording},
+          contentType: "application/json", 
+          success: function(result) {
+
+            console.log(result);
+  }});
+
+}
+
 
 var hearL2Audio = () => {
 

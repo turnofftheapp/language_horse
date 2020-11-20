@@ -33,8 +33,8 @@ $( "#hear-pronunciation-button" ).click(function() {
 
 $( "#submit-button" ).click(function() {
   // This method we should keep for testing purposes
-  // hearL2Audio();
-  submitAnswer();
+  hearL2Audio();
+  //submitAnswer();
   
 });
 

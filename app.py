@@ -52,8 +52,6 @@ def score(translate_to_code, L2TargetWord):
 									 method='POST')
 
 
-	import pdb; pdb.set_trace()
-
 	return "Hello World"
 
 @app.route('/')

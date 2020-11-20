@@ -4,10 +4,11 @@ var translateToLang = ""
 var translateFromLangCode = "";
 var translateToLangCode = "";
 var targetL1Word = "";
-var placeHolderMessagem = "";
+var placeHolderMessage = "";
 var rawBase64AudioString = "";
 var currentlyRecording = false;
 var userL2Recording = "";
+var L2TargetWord = "";
 
 // Connect to the record button
 const record = document.querySelector('#record-button');
@@ -147,8 +148,11 @@ var translateLanguages = () => {
 
   $.ajax({url: translateURL, success: function(result) {
     
+    
+    L2TargetWord = result["target_word"]
+
     // Update the translate_to box with the result
-    $("#L2-target-word").text(result["target_word"]);
+    $("#L2-target-word").text(L2TargetWord);
 
     // Update the global variable of the base 64 audio string
     rawBase64AudioString = result["target_audio"]

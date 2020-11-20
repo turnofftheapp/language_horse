@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, jsonify
+from flask import Flask, render_template, url_for, jsonify, request
 import random
 import pickle
 import requests
@@ -28,13 +28,9 @@ app = Flask(__name__)
 @app.route('/score/<string:translate_to_code>/<string:L2TargetWord>', methods=['GET', 'POST'])
 def score(translate_to_code, L2TargetWord):
 
-	print("Checking URL Parameters")
-	print("Translate to code:  ")
-	print(translate_to_code)
-	print("Translate to code:  ")
-	print(L2TargetWord)
-	
-	
+	# Get the audio data from the repsonse object
+	user_L2_recording = request.args['userL2Recording']
+		
 	return "Hello World"
 
 @app.route('/')

@@ -30,6 +30,19 @@ infile.close()
 
 app = Flask(__name__)
 
+@app.route('/correct_answer')
+def correct_answer():
+	return render_template('output-correct.html')
+
+@app.route('/incorrect_answer/<string:google_heard>/<string:target_L2_word>')
+def incorrect_answer(google_heard, target_L2_word):
+	## Pass in the correct values to be displayed in this screen
+	
+	incorrect_info = {"googleHeard": google_heard,
+	                 "target_L2_word": target_L2_word}
+
+	return render_template('output-wrong.html', incorrectInfo = incorrect_info)
+
 @app.route('/score/<string:translate_to_code>/<string:L2TargetWord>', methods=['GET', 'POST'])
 def score(translate_to_code, L2TargetWord):
 

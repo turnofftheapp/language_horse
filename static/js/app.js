@@ -68,21 +68,6 @@ if (navigator.mediaDevices.getUserMedia) {
 
     mediaRecorder.onstop = function(e) {
       
-      // TODO: Figure out what kind of encoding and audio type
-      // we are dealing with:
-
-      // https://www.vocitec.com/docs-tools/blog/sampling-rates-sample-depths-and-bit-rates-basic-audio-concepts
-
-      // https://cloud.google.com/speech-to-text/docs/best-practices
-
-      // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/codecs_parameter
-
-      //var options = {"mimeType": "audio/wav",
-      //               "audioBitsPerSecond": }
-      
-      // Create the audio blob
-      // const blob = new Blob(chunks, options);
-
       const blob = new Blob(chunks, { 'type' : 'audio/mp3' });
 
       // Clear out chunks
@@ -96,8 +81,6 @@ if (navigator.mediaDevices.getUserMedia) {
       var base64data = reader.result;                
         // Add the raw base64 string to the top
         userL2Recording = base64data.substr(base64data.indexOf(',')+1)
-        console.log("Here is the file that should be mp3 encoded: ")
-        console.log(userL2Recording);
       }
     }
 

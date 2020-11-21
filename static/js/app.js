@@ -83,7 +83,7 @@ if (navigator.mediaDevices.getUserMedia) {
       // Create the audio blob
       // const blob = new Blob(chunks, options);
 
-      const blob = new Blob(chunks, { 'type' : 'audio/wav; codecs=0' });
+      const blob = new Blob(chunks, { 'type' : 'audio/mp3' });
 
       // Clear out chunks
       chunks = [];
@@ -96,6 +96,8 @@ if (navigator.mediaDevices.getUserMedia) {
       var base64data = reader.result;                
         // Add the raw base64 string to the top
         userL2Recording = base64data.substr(base64data.indexOf(',')+1)
+        console.log("Here is the file that should be mp3 encoded: ")
+        console.log(userL2Recording);
       }
     }
 

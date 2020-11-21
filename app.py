@@ -22,7 +22,6 @@ GOOGLE_SPEECH_TO_TEXT_ENDPOINT = 'https://speech.googleapis.com/v1p1beta1/speech
 
 GOOGLE_SPEECH_TO_TEXT_ENDPOINT_WITH_KEY = GOOGLE_SPEECH_TO_TEXT_ENDPOINT + "?key=" + GOOGLE_API_KEY
 
-
 # Import the pickle file which contains the langauge pairs
 infile = open('languages_pickle','rb')
 langs = pickle.load(infile)
@@ -65,8 +64,28 @@ def score(translate_to_code, L2TargetWord):
 									 google_speech_to_text_payload,
 									 method='POST')
 
+	
+	# Extracting the text from the speech recognition response
+	try:
+		recognized_speech = speech_recognition_result['results'][0]['alternatives'][0]['transcript']
+	except:
+		# TODO: Implement error handling hear
+		return "There was an error on the backend"
 
-	return "Hello World"
+
+	if (recognized_speech == L2TargetWord):
+		is_correct = True
+		redirect_url = "/correct_answer"
+	else:
+		is_correct = False
+		redirect_url = "/incorrect_answer"
+
+	return jsonify({"isCorrect": is_correct,
+		            "redirectURL": redirect_url,
+		            "googleHeard": recognized_speech,
+		            "targetL2Word": L2TargetWord})
+		
+
 
 @app.route('/')
 def home():

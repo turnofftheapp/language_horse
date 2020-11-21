@@ -70,6 +70,18 @@ function replaceAudio(src) {
 function stopRecordingCallback() {
     replaceAudio(URL.createObjectURL(recorder.getBlob()));
 
+    blob = recorder.getBlob()
+
+    var reader = new FileReader();
+        reader.readAsDataURL(blob); 
+        reader.onloadend = function() {
+        var base64data = reader.result;                
+        // Add the raw base64 string to the top
+        userL2Recording = base64data.substr(base64data.indexOf(',')+1)
+        console.log(userL2Recording);
+      }
+
+
     btnStartRecording.disabled = false;
 
     setTimeout(function() {
@@ -138,9 +150,11 @@ btnStartRecording.onclick = function() {
 
     var options = {
         type: 'audio',
-        numberOfAudioChannels: isEdge ? 1 : 2,
-        checkForInactiveTracks: true,
-        bufferSize: 16384
+        mimeType: 'audio/mp3',
+        numberOfAudioChannels: 1,
+        //checkForInactiveTracks: true,
+        //bufferSize: 16384,
+        sampleRate: 16000
     };
 
     if(isSafari || isEdge) {
@@ -148,13 +162,13 @@ btnStartRecording.onclick = function() {
     }
 
     if(navigator.platform && navigator.platform.toString().toLowerCase().indexOf('win') === -1) {
-        options.sampleRate = 48000; // or 44100 or remove this line for default
+        options.sampleRate = 16000; // or 44100 or remove this line for default
     }
 
     if(isSafari) {
         options.sampleRate = 44100;
         options.bufferSize = 4096;
-        options.numberOfAudioChannels = 2;
+        options.numberOfAudioChannels = 1;
     }
 
     if(recorder) {

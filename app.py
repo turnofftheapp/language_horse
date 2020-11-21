@@ -18,10 +18,9 @@ GOOGLE_TEXT_TO_SPEECH_ENDPOINT = "https://texttospeech.googleapis.com/v1/text:sy
 
 GOOGLE_TEXT_TO_SPEECH_ENDPOINT_WITH_KEY = GOOGLE_TEXT_TO_SPEECH_ENDPOINT + "?key=" + GOOGLE_API_KEY
 
-GOOGLE_SPEECH_TO_TEXT_ENDPOINT = 'https://speech.googleapis.com/v1/speech:recognize'
+GOOGLE_SPEECH_TO_TEXT_ENDPOINT = 'https://speech.googleapis.com/v1p1beta1/speech:recognize'
 
 GOOGLE_SPEECH_TO_TEXT_ENDPOINT_WITH_KEY = GOOGLE_SPEECH_TO_TEXT_ENDPOINT + "?key=" + GOOGLE_API_KEY
-
 
 # Import the pickle file which contains the langauge pairs
 infile = open('languages_pickle','rb')
@@ -29,6 +28,19 @@ langs = pickle.load(infile)
 infile.close()
 
 app = Flask(__name__)
+
+@app.route('/correct_answer')
+def correct_answer():
+	return render_template('output-correct.html')
+
+@app.route('/incorrect_answer/<string:google_heard>/<string:target_L2_word>')
+def incorrect_answer(google_heard, target_L2_word):
+	## Pass in the correct values to be displayed in this screen
+	
+	incorrect_info = {"googleHeard": google_heard,
+	                 "target_L2_word": target_L2_word}
+
+	return render_template('output-wrong.html', incorrectInfo = incorrect_info)
 
 @app.route('/score/<string:translate_to_code>/<string:L2TargetWord>', methods=['GET', 'POST'])
 def score(translate_to_code, L2TargetWord):
@@ -39,20 +51,41 @@ def score(translate_to_code, L2TargetWord):
 	# Payload for translation api
 	google_speech_to_text_payload = {
 		"config": {
-      		"encoding":"LINEAR16",
+      		"encoding":"MP3",
       		"sampleRateHertz": 16000,
-      		"languageCode": "en-US",
-      		"enableWordTimeOffsets": False
+      		"languageCode": translate_to_code
   		},
-  		"audio": user_L2_recording
+  		"audio": {
+  			"content": user_L2_recording
+  		}
   	}
 	
 	speech_recognition_result = make_api_request(GOOGLE_SPEECH_TO_TEXT_ENDPOINT_WITH_KEY,
 									 google_speech_to_text_payload,
 									 method='POST')
 
+	
+	# Extracting the text from the speech recognition response
+	try:
+		recognized_speech = speech_recognition_result['results'][0]['alternatives'][0]['transcript']
+	except:
+		# TODO: Implement error handling hear
+		return "There was an error on the backend"
 
-	return "Hello World"
+
+	if (recognized_speech == L2TargetWord):
+		is_correct = True
+		redirect_url = "/correct_answer"
+	else:
+		is_correct = False
+		redirect_url = "/incorrect_answer"
+
+	return jsonify({"isCorrect": is_correct,
+		            "redirectURL": redirect_url,
+		            "googleHeard": recognized_speech,
+		            "targetL2Word": L2TargetWord})
+		
+
 
 @app.route('/')
 def home():

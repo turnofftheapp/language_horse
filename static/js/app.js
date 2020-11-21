@@ -33,8 +33,8 @@ $( "#hear-pronunciation-button" ).click(function() {
 
 $( "#submit-button" ).click(function() {
   // This method we should keep for testing purposes
-  hearL2Audio();
-  //submitAnswer();
+  //hearL2Audio();
+  submitAnswer();
   
 });
 
@@ -68,22 +68,7 @@ if (navigator.mediaDevices.getUserMedia) {
 
     mediaRecorder.onstop = function(e) {
       
-      // TODO: Figure out what kind of encoding and audio type
-      // we are dealing with:
-
-      // https://www.vocitec.com/docs-tools/blog/sampling-rates-sample-depths-and-bit-rates-basic-audio-concepts
-
-      // https://cloud.google.com/speech-to-text/docs/best-practices
-
-      // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/codecs_parameter
-
-      //var options = {"mimeType": "audio/wav",
-      //               "audioBitsPerSecond": }
-      
-      // Create the audio blob
-      // const blob = new Blob(chunks, options);
-
-      const blob = new Blob(chunks, { 'type' : 'audio/wav; codecs=0' });
+      const blob = new Blob(chunks, { 'type' : 'audio/mp3' });
 
       // Clear out chunks
       chunks = [];
@@ -130,11 +115,19 @@ var submitAnswer = () => {
           contentType: "application/json", 
           success: function(result) {
 
-            console.log(result);
+          if (result['isCorrect']) {
+            // https://stackoverflow.com/a/506004
+            redirectURL = result['redirectURL']
+            
+          } else {
+            redirectURL = result['redirectURL'] + '/' + result['googleHeard'] + '/' + result['targetL2Word'];
+          }
+
+          window.location.replace(redirectURL);
+          
   }});
 
 }
-
 
 var hearL2Audio = () => {
 

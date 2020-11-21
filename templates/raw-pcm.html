@@ -1,54 +1,66 @@
 <h1> Test </h1>
 
-<button id="record-button"> Record </button>
-
-<button id="stop-record-button"> Stop record </button>
-
-<script src="{{url_for('static', filename='lib/jquery/jquery-3.5.1.min.js')}}"> </script>
-
 <!-- Record RTC Library CDN -->
     <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
 
+
 <script>
+    // RecordRTC
+var recordRTC = null;
 
-// Use JQUERY to bind click events to the functions below
-$( "#record-button" ).click(function() {
-  startRecord();
-})
+var isMimeTypeSupported = (_mimeType) => {
+    // if (webrtcDetectedBrowser === 'edge')  return false;
 
-$( "#stop-record-button" ).click(function() {
-  stopRecord();
-})
+    if (typeof MediaRecorder.isTypeSupported !== 'function') {
+        return true;
+    }
 
-let stream = navigator.mediaDevices.getUserMedia({audio: true});
-let recorder = new RecordRTCPromisesHandler(stream, {
-    type: 'audio'
+    return MediaRecorder.isTypeSupported(_mimeType);
+};
+
+var mimeType = 'audio/wav';
+var recorderType = StereoAudioRecorder;
+
+//if(isMimeTypeSupported(mimeType) === false) {
+//    console.log(mimeType, 'is not supported.');
+//    mimeType = 'audio/ogg';
+//
+//    if(isMimeTypeSupported(mimeType) === false) {
+//        console.log(mimeType, 'is not supported.');
+//        mimeType = 'audio/webm';
+//    }
+//}
+
+const rtcSession = {
+    type: 'audio',
+    mimeType: mimeType,
+    recorderType: recorderType,
+    audio: true,
+    video: false,
+    sampleRate: 16000
+};
+
+console.log('final rtcSession object', rtcSession);
+
+navigator.getUserMedia(rtcSession, (mediaStream) => {
+    // RecordRTC requires "second" parameter named as "options" or "configuration" or "hints"
+    recordRTC = RecordRTC(mediaStream, rtcSession);
+
+    recordRTC.startRecording();
+
+    // after X amount of seconds clear the timer interval and stop recording 
+    setTimeout(() => {
+        clearAndStop(recordRTC);
+    }, 6000);
+}, () => {
+    console.error('An error has occurred while attempting to get user media.');
 });
-    
 
-var startRecord = () => {
-
-  recorder.startRecording();
-
-}
-
-var stopRecord = () => {
-
-    console.log("function called")
-
-  recorder.stopRecording(function() {
-        let blob = recorder.getBlob();
-        invokeSaveAsDialog(blob);
+// stop recording function & clear timer
+var clearAndStop = (recordRTC) => {
+    recordRTC.stopRecording((blob) => {
+        const recordRTCBlob = recordRTC.getBlob();
+        console.log(recordRTCBlob);
     });
-
-  console.log("Here is the blob: ")
-  console.log(blob);
-
-}
-
-
-
-
-
-
+};
 </script>

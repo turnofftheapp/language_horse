@@ -109,9 +109,9 @@ var submitAnswer = () => {
 
   scoreURL = '/score' + '/'  + translateToLangCode + '/' + L2TargetWord
 
-
-  $.ajax({url: scoreURL,
-          data: {"userL2Recording": userL2Recording},
+  $.post({url: scoreURL,
+          data: JSON.stringify({'userL2Recording': userL2Recording}),
+          processData: false,
           contentType: "application/json", 
           success: function(result) {
 

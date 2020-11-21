@@ -45,8 +45,9 @@ def incorrect_answer(google_heard, target_L2_word):
 @app.route('/score/<string:translate_to_code>/<string:L2TargetWord>', methods=['GET', 'POST'])
 def score(translate_to_code, L2TargetWord):
 
-	# Get the audio data from the repsonse object
-	user_L2_recording = request.args['userL2Recording']
+	r = request.get_json()
+
+	user_L2_recording = r['userL2Recording']
 	
 	# Payload for translation api
 	google_speech_to_text_payload = {

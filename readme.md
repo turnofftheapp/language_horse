@@ -21,4 +21,8 @@ An awesome language learning applciation to practice your pronunciation
 
 1. You can check that you are logged onto the Heroku CLI as such `heroku whoami`
 
-2. The app is deployed to: `mackscarey+language_horse@gmail.com`
+2. The app is deployed to: `mackscarey+language_horse@gmail.com`, ask Max for password.
+
+## Microphone issues
+
+1. Makes sure your built-in input volume on your device is not TOO high, you may have severe audio distrotions (alien sounds) if it is too high.

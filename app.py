@@ -35,6 +35,19 @@ app = Flask(__name__)
 def raw_pcm():
     return render_template('raw-pcm.html')
 
+@app.route('/is-type-supported')
+def is_type_supported():
+    return render_template('is-type-supported.html')
+
+
+@app.route('/audio-recording')
+def audio_recording():
+    return render_template('audio-recording.html')
+
+@app.route('/16khz')
+def sixteenKhz():
+    return render_template('16khz.html')
+
 
 @app.route('/score/<string:translate_to_code>/<string:L2TargetWord>', methods=['GET', 'POST'])
 def score(translate_to_code, L2TargetWord):

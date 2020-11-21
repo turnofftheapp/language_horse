@@ -33,8 +33,8 @@ $( "#hear-pronunciation-button" ).click(function() {
 
 $( "#submit-button" ).click(function() {
   // This method we should keep for testing purposes
-  hearL2Audio();
-  //submitAnswer();
+  //hearL2Audio();
+  submitAnswer();
   
 });
 
@@ -115,11 +115,19 @@ var submitAnswer = () => {
           contentType: "application/json", 
           success: function(result) {
 
-            console.log(result);
+          if (result['isCorrect']) {
+            // https://stackoverflow.com/a/506004
+            redirectURL = result['redirectURL']
+            
+          } else {
+            redirectURL = result['redirectURL'] + '/' + result['googleHeard'] + '/' + result['targetL2Word'];
+          }
+
+          window.location.replace(redirectURL);
+          
   }});
 
 }
-
 
 var hearL2Audio = () => {
 

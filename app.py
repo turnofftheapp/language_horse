@@ -39,12 +39,13 @@ def score(translate_to_code, L2TargetWord):
 	# Payload for translation api
 	google_speech_to_text_payload = {
 		"config": {
-      		"encoding":"LINEAR16",
+      		"encoding":"MP3",
       		"sampleRateHertz": 16000,
-      		"languageCode": "en-US",
-      		"enableWordTimeOffsets": False
+      		"languageCode": translate_to_code
   		},
-  		"audio": user_L2_recording
+  		"audio": {
+  			"content": user_L2_recording
+  		}
   	}
 	
 	speech_recognition_result = make_api_request(GOOGLE_SPEECH_TO_TEXT_ENDPOINT_WITH_KEY,

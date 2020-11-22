@@ -55,11 +55,13 @@ if (navigator.mediaDevices.getUserMedia) {
             mediaRecorder.start();
             console.log("recorder started");
             $('#record-button').css('color','yellow');
+            $('#record-button-text').text('Recording...')
             console.log(mediaRecorder.state);
             currentlyRecording = true;
           } else {
             console.log("Stopping media recording")
             $('#record-button').css('color','green');
+            $('#record-button-text').text('Re-record')
             mediaRecorder.stop();
             currentlyRecording = false;
           }

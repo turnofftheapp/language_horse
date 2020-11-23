@@ -15,10 +15,11 @@ An awesome language learning applciation to practice your pronunciation
 
 6. Visit the `localhost:5000/` in the browser.
 
-7. Explore the app, and have fun!
-
 ## Heroku
 
 1. You can check that you are logged onto the Heroku CLI as such `heroku whoami`
 
 2. The app is deployed to: `mackscarey+language_horse@gmail.com`
+
+## Using on MacOs Safari and iosSafari
+In order to use this app on safari, you must enable the MediaRecorder as an experimental feature.

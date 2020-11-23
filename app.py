@@ -74,7 +74,7 @@ def score(translate_to_code, L2TargetWord):
 		return "There was an error on the backend"
 
 
-	if (recognized_speech == L2TargetWord):
+	if (recognized_speech.lower() == L2TargetWord.lower()):
 		is_correct = True
 		redirect_url = "/correct_answer"
 	else:
@@ -83,8 +83,8 @@ def score(translate_to_code, L2TargetWord):
 
 	return jsonify({"isCorrect": is_correct,
 		            "redirectURL": redirect_url,
-		            "googleHeard": recognized_speech,
-		            "targetL2Word": L2TargetWord})
+		            "googleHeard": recognized_speech.lower(),
+		            "targetL2Word": L2TargetWord.lower()})
 		
 
 

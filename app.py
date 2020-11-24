@@ -1,4 +1,5 @@
 from flask import Flask, render_template, url_for, jsonify, request
+from flask_talisman import Talisman
 import random
 import pickle
 import requests
@@ -28,6 +29,15 @@ langs = pickle.load(infile)
 infile.close()
 
 app = Flask(__name__)
+
+# TODO:
+# It looks like providing an empty content security policy
+# allows all of my CSP to be loaded appropriately, and hopefully forces https
+# Look into explicitly whitelisting content: https://github.com/GoogleCloudPlatform/flask-talisman
+csp = {}
+
+Talisman(app,
+	     content_security_policy=csp)
 
 @app.route('/correct_answer')
 def correct_answer():

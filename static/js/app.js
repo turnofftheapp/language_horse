@@ -54,13 +54,19 @@ if (navigator.mediaDevices.getUserMedia) {
       if (!currentlyRecording) { 
             mediaRecorder.start();
             console.log("recorder started");
+            
+            // Changing background here is redundant the first time around
+            // It is to undo the change on line 69 below
+            $('#record-button').css('background','#FF0000');
+            
             $('#record-button').css('color','yellow');
             $('#record-button-text').text('Recording...')
             console.log(mediaRecorder.state);
             currentlyRecording = true;
           } else {
             console.log("Stopping media recording")
-            $('#record-button').css('color','green');
+            $('#record-button').css('color','red');
+            $('#record-button').css('background','#dfe0e1');
             $('#record-button-text').text('Re-record')
             mediaRecorder.stop();
             currentlyRecording = false;

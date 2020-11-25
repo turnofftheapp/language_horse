@@ -79,9 +79,14 @@ def score(translate_to_code, L2TargetWord):
 	# Extracting the text from the speech recognition response
 	try:
 		recognized_speech = speech_recognition_result['results'][0]['alternatives'][0]['transcript']
-	except:
-		# TODO: Implement error handling hear
-		return "There was an error on the backend"
+	except Exception as e:
+		print('Here is the exception: '+ str(e))
+
+		return jsonify({"isCorrect": False,
+		            "redirectURL": "",
+		            "googleHeard": "",
+		            "targetL2Word": "",
+		            "error": str(e)})
 
 
 	if (recognized_speech.lower() == L2TargetWord.lower()):

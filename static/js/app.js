@@ -123,6 +123,11 @@ var submitAnswer = () => {
           contentType: "application/json", 
           success: function(result) {
 
+          if (result['error']) {
+            alert("Please send another recording, your audio could not be heard. Here is the error: " + result['error'])
+            return
+          }
+
           if (result['isCorrect']) {
             // https://stackoverflow.com/a/506004
             redirectURL = result['redirectURL']

@@ -74,12 +74,19 @@ def score(translate_to_code, L2TargetWord):
   			"content": user_L2_recording
   		}
   	}
+
+	print("****Payload************")
+	print(google_speech_to_text_payload)
 	
 	speech_recognition_result = make_api_request(GOOGLE_SPEECH_TO_TEXT_ENDPOINT_WITH_KEY,
 									 google_speech_to_text_payload,
 									 method='POST')
 
 	
+	
+	print("****speech_recognition_result****")
+	print(speech_recognition_result)
+
 	# Extracting the text from the speech recognition response
 	try:
 		recognized_speech = speech_recognition_result['results'][0]['alternatives'][0]['transcript']

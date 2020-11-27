@@ -123,6 +123,7 @@ var submitAnswer = () => {
 
   console.log("Here is the recording");
   console.log(userL2Recording);
+
   $.post({url: scoreURL,
           data: JSON.stringify({'userL2Recording': userL2Recording}),
           processData: false,

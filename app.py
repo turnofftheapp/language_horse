@@ -58,6 +58,10 @@ def score(translate_to_code, L2TargetWord):
 	r = request.get_json()
 
 	user_L2_recording = r['userL2Recording']
+
+	print("******Start*******")
+	print(user_L2_recording)
+	print("******END*********")
 	
 	# Payload for translation api
 	google_speech_to_text_payload = {

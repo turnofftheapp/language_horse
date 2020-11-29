@@ -55,10 +55,17 @@ $( "#submit-button" ).click(function() {
 let recorder
 
 
+            
+
+
 recordButton.addEventListener('click', () => {
 
 
   if (!currentlyRecording) {
+    
+    
+
+
     // Request permissions to record audio
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
       
@@ -86,6 +93,13 @@ recordButton.addEventListener('click', () => {
   
       // Start recording
       recorder.start()
+
+      console.log("recorder started");        
+      // Changing background here is redundant the first time around
+      // It is to undo the change on line 69 below
+      $('#record-button').css('background','#FF0000');
+      $('#record-button').css('color','yellow');
+      $('#record-button-text').text('Recording...')
 
       currentlyRecording = true;
     })

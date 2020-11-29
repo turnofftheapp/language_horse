@@ -1,3 +1,8 @@
+import AudioRecorder from '../node_modules/audio-recorder-polyfill/index.js'
+window.MediaRecorder = AudioRecorder
+
+
+
 // Initialize global variables that will hold the key langauges
 var translateFromLang = "";
 var translateToLang = ""
@@ -11,8 +16,9 @@ var userL2Recording = "";
 var L2TargetWord = "";
 
 // Connect to the record button
-const record = document.querySelector('#record-button');
+const recordButton = document.querySelector('#record-button');
 
+const audio = document.querySelector('#invisible-audio');
 
 // Set the default value as English in the drop down
 $('#ddl_lang_from').val('English (US)')
@@ -46,78 +52,64 @@ $( "#submit-button" ).click(function() {
   
 });
 
+let recorder
 
 
-if (navigator.mediaDevices.getUserMedia) {
-  console.log('getUserMedia supported.');
-
-  const constraints = { audio: true };
-  let chunks = [];
-
-  let onSuccess = function(stream) {
-    const mediaRecorder = new MediaRecorder(stream);
-
-    // TODO: Implement a similar function
-    // visualize(stream);
-
-    record.onclick = function() {
-      if (!currentlyRecording) { 
-            mediaRecorder.start();
-            console.log("recorder started");
-            
-            // Changing background here is redundant the first time around
-            // It is to undo the change on line 69 below
-            $('#record-button').css('background','#FF0000');
-            
-            $('#record-button').css('color','yellow');
-            $('#record-button-text').text('Recording...')
-            console.log(mediaRecorder.state);
-            currentlyRecording = true;
-          } else {
-            console.log("Stopping media recording")
-            $('#record-button').css('color','red');
-            $('#record-button').css('background','#dfe0e1');
-            $('#record-button-text').text('Re-record')
-            mediaRecorder.stop();
-            currentlyRecording = false;
-          }
-    }
+recordButton.addEventListener('click', () => {
 
 
-    mediaRecorder.onstop = function(e) {
+  if (!currentlyRecording) {
+    // Request permissions to record audio
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
       
-      const blob = new Blob(chunks, { 'type' : 'audio/mp3' });
+      var chunks = [];
+      recorder = new MediaRecorder(stream)
+     
+  
+      // Set record to <audio> when recording will be finished
+      recorder.addEventListener('dataavailable', e => {
+        audio.src = URL.createObjectURL(e.data);
+        console.log(e.data);
 
-      // Clear out chunks
-      chunks = [];
+        var reader = new FileReader();
+        reader.readAsDataURL(e.data); 
+        reader.onloadend = function() {
+        var base64data = reader.result;                
+        
+        // TODO: GO BACK TO MASTER AND GET
+        // THIS STRING
+        userL2Recording = ""
+ }
 
-      // Convert the blob to a base 64 string
-      // See: https://stackoverflow.com/a/18650249/5420796
-      var reader = new FileReader();
-      reader.readAsDataURL(blob); 
-      reader.onloadend = function() {
-      var base64data = reader.result;                
-        // Add the raw base64 string to the top
-        userL2Recording = base64data.substr(base64data.indexOf(',')+1)
+
+      })
+  
+      // Start recording
+      recorder.start()
+
+      currentlyRecording = true;
+    })
+
+      } else {
+
+
+        // Stop recording
+        recorder.stop()
+        // Remove “recording” icon from browser tab
+        recorder.stream.getTracks().forEach(i => i.stop())
+        //const blob = new Blob(chunks, { 'type' : 'audio/mp3' });
+        //console.log(blob);
+
+        currentlyRecording = false;
+
+
       }
-    }
+})
 
-    mediaRecorder.ondataavailable = function(e) {
-      chunks.push(e.data);
-    }
-  }
 
-  let onError = function(err) {
-    console.log('The following error occured: ' + err);
-  }
-
-  navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
-
-} else {
-   console.log('getUserMedia not supported on your browser!');
-}
 
 var submitAnswer = () => {
+
 
   // Make sure that there is an L2 recording
   if (!userL2Recording) {

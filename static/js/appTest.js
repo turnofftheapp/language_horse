@@ -109,6 +109,11 @@ recordButton.addEventListener('click', () => {
 
         // Stop recording
         recorder.stop()
+
+        console.log("Stopping media recording")
+        $('#record-button').css('color','red');
+        $('#record-button').css('background','#dfe0e1');
+        $('#record-button-text').text('Re-record');
         
         // Remove “recording” icon from browser tab
         recorder.stream.getTracks().forEach(i => i.stop())

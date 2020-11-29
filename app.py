@@ -36,8 +36,8 @@ app = Flask(__name__)
 # Look into explicitly whitelisting content: https://github.com/GoogleCloudPlatform/flask-talisman
 csp = {}
 
-#Talisman(app,
-#	     content_security_policy=csp)
+Talisman(app,
+	     content_security_policy=csp)
 
 @app.route('/test')
 def test():
@@ -175,7 +175,7 @@ def translate(transate_from_code, translate_to_code, L1_word):
 
 @app.route('/input')
 def view_abc():
-    return render_template('input.html', langs=langs)
+    return render_template('test.html', langs=langs)
 
 
 @app.route('/win')

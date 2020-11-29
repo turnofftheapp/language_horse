@@ -76,9 +76,8 @@ recordButton.addEventListener('click', () => {
         reader.onloadend = function() {
         var base64data = reader.result;                
         
-        // TODO: GO BACK TO MASTER AND GET
-        // THIS STRING
-        userL2Recording = ""
+        // Extract the raw base64 string
+        userL2Recording = base64data.substr(base64data.indexOf(',')+1)
  }
 
 

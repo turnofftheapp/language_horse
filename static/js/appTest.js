@@ -1,4 +1,8 @@
 import AudioRecorder from '../node_modules/audio-recorder-polyfill/index.js'
+import mpegEncoder from '../node_modules/audio-recorder-polyfill/mpeg-encoder/index.js'
+AudioRecorder.encoder = mpegEncoder
+AudioRecorder.prototype.mimeType = 'audio/mpeg'
+
 window.MediaRecorder = AudioRecorder
 
 // Initialize global variables that will hold the key langauges

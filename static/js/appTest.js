@@ -1,8 +1,6 @@
 import AudioRecorder from '../node_modules/audio-recorder-polyfill/index.js'
 window.MediaRecorder = AudioRecorder
 
-
-
 // Initialize global variables that will hold the key langauges
 var translateFromLang = "";
 var translateToLang = ""
@@ -78,6 +76,7 @@ recordButton.addEventListener('click', () => {
         
         // Extract the raw base64 string
         userL2Recording = base64data.substr(base64data.indexOf(',')+1)
+        console.log(userL2Recording);
  }
 
 
@@ -112,11 +111,14 @@ var submitAnswer = () => {
 
   // Make sure that there is an L2 recording
   if (!userL2Recording) {
-    alert("You must record somet")
+    alert("You must record something!")
     return
   }
 
-  scoreURL = '/score' + '/'  + translateToLangCode + '/' + L2TargetWord
+  console.log("Here is what we are submitting!")
+  console.log(userL2Recording);
+
+  var scoreURL = '/score' + '/'  + translateToLangCode + '/' + L2TargetWord
 
   console.log("Here is the recording");
   console.log(userL2Recording);
@@ -134,10 +136,10 @@ var submitAnswer = () => {
 
           if (result['isCorrect']) {
             // https://stackoverflow.com/a/506004
-            redirectURL = result['redirectURL']
+            var redirectURL = result['redirectURL']
             
           } else {
-            redirectURL = result['redirectURL'] + '/' + result['googleHeard'] + '/' + result['targetL2Word'];
+            var redirectURL = result['redirectURL'] + '/' + result['googleHeard'] + '/' + result['targetL2Word'];
           }
 
           window.location.replace(redirectURL);

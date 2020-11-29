@@ -36,8 +36,12 @@ app = Flask(__name__)
 # Look into explicitly whitelisting content: https://github.com/GoogleCloudPlatform/flask-talisman
 csp = {}
 
-Talisman(app,
-	     content_security_policy=csp)
+#Talisman(app,
+#	     content_security_policy=csp)
+
+@app.route('/test')
+def test():
+	return render_template('test.html', langs=langs)
 
 @app.route('/correct_answer')
 def correct_answer():

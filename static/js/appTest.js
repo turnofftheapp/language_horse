@@ -63,8 +63,6 @@ recordButton.addEventListener('click', () => {
 
   if (!currentlyRecording) {
     
-    
-
 
     // Request permissions to record audio
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
@@ -116,7 +114,7 @@ recordButton.addEventListener('click', () => {
         $('#record-button-text').text('Re-record');
         
         // Remove “recording” icon from browser tab
-        recorder.stream.getTracks().forEach(i => i.stop())
+        //recorder.stream.getTracks().forEach(i => i.stop())
 
         // Set currently recording to false
         currentlyRecording = false;

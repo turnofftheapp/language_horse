@@ -20,15 +20,13 @@ var L2TargetWord = "";
 // Connect to the record button
 const recordButton = document.querySelector('#record-button');
 
+
+// Connect to the audio element
 const audio = document.querySelector('#invisible-audio');
+
 
 // Set the default value as English in the drop down
 $('#ddl_lang_from').val('English (US)')
-
-
-// Set the default value as English in the drop down
-$('#ddl_lang_to').val('Spanish (Spain)')
-
 
 // Use JQUERY to bind click events to the functions below
 $( "#translate_next" ).click(function() {
@@ -97,11 +95,11 @@ recordButton.addEventListener('click', () => {
 
         // Stop recording
         recorder.stop()
+        
         // Remove “recording” icon from browser tab
         recorder.stream.getTracks().forEach(i => i.stop())
-        //const blob = new Blob(chunks, { 'type' : 'audio/mp3' });
-        //console.log(blob);
 
+        // Set currently recording to false
         currentlyRecording = false;
 
 
@@ -195,7 +193,7 @@ var selectLanguages = () => {
 var translateLanguages = () => {
 
   // Get the word from the text box
-  targetL1Word = "Hello world";
+  targetL1Word = $("#L1-input-text-box").val()
 
   // Placeholder code for button, we will put ajax call here
   var translateURL = "/translate" + "/" + translateFromLangCode + "/" + translateToLangCode + "/" + targetL1Word;

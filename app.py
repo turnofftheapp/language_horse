@@ -23,6 +23,8 @@ GOOGLE_SPEECH_TO_TEXT_ENDPOINT = 'https://speech.googleapis.com/v1p1beta1/speech
 
 GOOGLE_SPEECH_TO_TEXT_ENDPOINT_WITH_KEY = GOOGLE_SPEECH_TO_TEXT_ENDPOINT + "?key=" + GOOGLE_API_KEY
 
+NON_200_STATUS_CODES = []
+
 # Import the pickle file which contains the langauge pairs
 infile = open('languages_pickle','rb')
 langs = pickle.load(infile)
@@ -38,6 +40,7 @@ csp = {}
 
 Talisman(app,
 	     content_security_policy=csp)
+
 
 @app.route('/correct_answer')
 def correct_answer():
@@ -58,6 +61,10 @@ def score(translate_to_code, L2TargetWord):
 	r = request.get_json()
 
 	user_L2_recording = r['userL2Recording']
+
+	print("******Start*******")
+	print(user_L2_recording)
+	print("******END*********")
 	
 	# Payload for translation api
 	google_speech_to_text_payload = {
@@ -70,13 +77,28 @@ def score(translate_to_code, L2TargetWord):
   			"content": user_L2_recording
   		}
   	}
+
+	print("****Payload************")
+	print(google_speech_to_text_payload)
 	
 	speech_recognition_result = make_api_request(GOOGLE_SPEECH_TO_TEXT_ENDPOINT_WITH_KEY,
 									 google_speech_to_text_payload,
 									 method='POST')
 
 	
-	# Extracting the text from the speech recognition response
+	# If the make_api_request() method returns false, then send that message tot he
+	# Front end
+	if (speech_recognition_result == False):
+		return jsonify({"isCorrect": False,
+		            "redirectURL": "",
+		            "googleHeard": "",
+		            "targetL2Word": "",
+		            "error": "API Request Failed in Backend"})
+	
+	print("****speech_recognition_result****")
+	print(speech_recognition_result)
+
+	# REFACTOR ALL OF THIS:
 	try:
 		recognized_speech = speech_recognition_result['results'][0]['alternatives'][0]['transcript']
 	except Exception as e:
@@ -179,9 +201,29 @@ def make_api_request(url, payload, method):
   		'Content-Type': 'application/json'
 	}
 
-	response = requests.request(method, url, headers=headers, json = payload)
 	
+	try:
+
+		response = requests.request(method, url, headers=headers, json = payload)
+
+		if (int(response.status_code) != 200):
+			NON_200_STATUS_CODES.append(str(response.status_code))
+			# Configure this to send a message to slack:
+			send_non_200_status_codes()
+	
+	except requests.exceptions.RequestException as e:
+		# Print Out the string nd return string that says FALSE
+		print(str(e))
+		print("An API Request failed")
+		return False
+
 	return response.json()
+
+def send_non_200_status_codes():
+
+	# TODO CONFIGURE THIS TO SEND MESSAGES TO SLACK
+	print(NON_200_STATUS_CODES)
+
 
 if __name__ == '__main__':
     app.run()

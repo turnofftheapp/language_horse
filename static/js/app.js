@@ -23,11 +23,6 @@ var L2TargetWord = "";
 // Connect to the record button
 const recordButton = document.querySelector('#record-button');
 
-
-// Connect to the audio element
-const audio = document.querySelector('#invisible-audio');
-
-
 // Set the default value as English in the drop down
 $('#ddl_lang_from').val('English (US)')
 
@@ -64,11 +59,9 @@ let recorder
       recorder = new MediaRecorder(stream)
      
   
-      // Set record to <audio> when recording will be finished
+      // Convert blob to base 64 string when finished
       recorder.addEventListener('dataavailable', e => {
-        audio.src = URL.createObjectURL(e.data);
-        console.log(e.data);
-
+        
         var reader = new FileReader();
         reader.readAsDataURL(e.data); 
         reader.onloadend = function() {

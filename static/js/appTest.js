@@ -54,17 +54,7 @@ $( "#submit-button" ).click(function() {
 
 let recorder
 
-
-            
-
-
-recordButton.addEventListener('click', () => {
-
-
-  if (!currentlyRecording) {
-    
-
-    // Request permissions to record audio
+// Request permissions to record audio
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
       
       var chunks = [];
@@ -79,28 +69,35 @@ recordButton.addEventListener('click', () => {
         var reader = new FileReader();
         reader.readAsDataURL(e.data); 
         reader.onloadend = function() {
-        var base64data = reader.result;                
-        
-        // Extract the raw base64 string
-        userL2Recording = base64data.substr(base64data.indexOf(',')+1)
-        console.log(userL2Recording);
- }
+          
+          // Get the base 64 data
+          var base64data = reader.result;
+          // Extract the raw base64 string
+          userL2Recording = base64data.substr(base64data.indexOf(',')+1)
+          console.log(userL2Recording);
+        }
 
 
       })
-  
-      // Start recording
-      recorder.start()
-
-      console.log("recorder started");        
-      // Changing background here is redundant the first time around
-      // It is to undo the change on line 69 below
-      $('#record-button').css('background','#FF0000');
-      $('#record-button').css('color','yellow');
-      $('#record-button-text').text('Recording...')
-
-      currentlyRecording = true;
     })
+
+            
+recordButton.addEventListener('click', () => {
+
+  if (!currentlyRecording) {
+    
+    // Start recording
+    recorder.start()
+
+    console.log("recorder started");        
+    // Changing background here is redundant the first time around
+    // It is to undo the change on line 69 below
+    $('#record-button').css('background','#FF0000');
+    $('#record-button').css('color','yellow');
+    $('#record-button-text').text('Recording...')
+
+    currentlyRecording = true;
+    
 
       } else {
 

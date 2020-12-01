@@ -1,9 +1,12 @@
+// Import and Configure the AudioRecorder Polyfill Package
+// See docs here: https://github.com/ai/audio-recorder-polyfill
 import AudioRecorder from '../node_modules/audio-recorder-polyfill/index.js'
 import mpegEncoder from '../node_modules/audio-recorder-polyfill/mpeg-encoder/index.js'
+// Enable MP3 Encoding of Audio Files
 AudioRecorder.encoder = mpegEncoder
 AudioRecorder.prototype.mimeType = 'audio/mpeg'
-
 window.MediaRecorder = AudioRecorder
+// End configuration for Polyfill library
 
 // Initialize global variables that will hold the key langauges
 var translateFromLang = "";

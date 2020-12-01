@@ -39,9 +39,6 @@ csp = {}
 Talisman(app,
 	     content_security_policy=csp)
 
-@app.route('/test')
-def test():
-	return render_template('test.html', langs=langs)
 
 @app.route('/correct_answer')
 def correct_answer():
@@ -175,7 +172,7 @@ def translate(transate_from_code, translate_to_code, L1_word):
 
 @app.route('/input')
 def view_abc():
-    return render_template('test.html', langs=langs)
+    return render_template('input.html', langs=langs)
 
 
 @app.route('/win')

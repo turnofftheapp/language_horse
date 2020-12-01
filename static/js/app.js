@@ -1,6 +1,16 @@
+// Import and Configure the AudioRecorder Polyfill Package
+// See docs here: https://github.com/ai/audio-recorder-polyfill
+import AudioRecorder from '../node_modules/audio-recorder-polyfill/index.js'
+import mpegEncoder from '../node_modules/audio-recorder-polyfill/mpeg-encoder/index.js'
+// Enable MP3 Encoding of Audio Files
+AudioRecorder.encoder = mpegEncoder
+AudioRecorder.prototype.mimeType = 'audio/mpeg'
+window.MediaRecorder = AudioRecorder
+// End configuration for Polyfill library
+
 // Initialize global variables that will hold the key langauges
 var translateFromLang = "";
-var translateToLang = ""
+var translateToLang = "";
 var translateFromLangCode = "";
 var translateToLangCode = "";
 var targetL1Word = "";
@@ -11,12 +21,15 @@ var userL2Recording = "";
 var L2TargetWord = "";
 
 // Connect to the record button
-const record = document.querySelector('#record-button');
+const recordButton = document.querySelector('#record-button');
+
+
+// Connect to the audio element
+const audio = document.querySelector('#invisible-audio');
 
 
 // Set the default value as English in the drop down
 $('#ddl_lang_from').val('English (US)')
-
 
 // Use JQUERY to bind click events to the functions below
 $( "#translate_next" ).click(function() {
@@ -42,84 +55,89 @@ $( "#submit-button" ).click(function() {
   
 });
 
-if (navigator.mediaDevices.getUserMedia) {
-  console.log('getUserMedia supported.');
+let recorder
 
-  const constraints = { audio: true };
-  let chunks = [];
-
-  let onSuccess = function(stream) {
-    const mediaRecorder = new MediaRecorder(stream);
-
-    // TODO: Implement a similar function
-    // visualize(stream);
-
-    record.onclick = function() {
-      if (!currentlyRecording) { 
-            mediaRecorder.start();
-            console.log("recorder started");
-            
-            // Changing background here is redundant the first time around
-            // It is to undo the change on line 69 below
-            $('#record-button').css('background','#FF0000');
-            
-            $('#record-button').css('color','yellow');
-            $('#record-button-text').text('Recording...')
-            console.log(mediaRecorder.state);
-            currentlyRecording = true;
-          } else {
-            console.log("Stopping media recording")
-            $('#record-button').css('color','red');
-            $('#record-button').css('background','#dfe0e1');
-            $('#record-button-text').text('Re-record')
-            mediaRecorder.stop();
-            currentlyRecording = false;
-          }
-    }
-
-
-    mediaRecorder.onstop = function(e) {
+// Request permissions to record audio
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
       
-      const blob = new Blob(chunks, { 'type' : 'audio/mp3' });
+      var chunks = [];
+      recorder = new MediaRecorder(stream)
+     
+  
+      // Set record to <audio> when recording will be finished
+      recorder.addEventListener('dataavailable', e => {
+        audio.src = URL.createObjectURL(e.data);
+        console.log(e.data);
 
-      // Clear out chunks
-      chunks = [];
+        var reader = new FileReader();
+        reader.readAsDataURL(e.data); 
+        reader.onloadend = function() {
+          
+          // Get the base 64 data
+          var base64data = reader.result;
+          // Extract the raw base64 string
+          userL2Recording = base64data.substr(base64data.indexOf(',')+1)
+          console.log(userL2Recording);
+        }
 
-      // Convert the blob to a base 64 string
-      // See: https://stackoverflow.com/a/18650249/5420796
-      var reader = new FileReader();
-      reader.readAsDataURL(blob); 
-      reader.onloadend = function() {
-      var base64data = reader.result;                
-        // Add the raw base64 string to the top
-        userL2Recording = base64data.substr(base64data.indexOf(',')+1)
+
+      })
+    })
+
+            
+recordButton.addEventListener('click', () => {
+
+  if (!currentlyRecording) {
+    
+    // Start recording
+    recorder.start()
+
+    console.log("recorder started");        
+    // Changing background here is redundant the first time around
+    // It is to undo the change on line 69 below
+    $('#record-button').css('background','#FF0000');
+    $('#record-button').css('color','yellow');
+    $('#record-button-text').text('Recording...')
+
+    currentlyRecording = true;
+    
+
+      } else {
+
+
+        // Stop recording
+        recorder.stop()
+
+        console.log("Stopping media recording")
+        $('#record-button').css('color','red');
+        $('#record-button').css('background','#dfe0e1');
+        $('#record-button-text').text('Re-record');
+        
+        // Remove “recording” icon from browser tab
+        //recorder.stream.getTracks().forEach(i => i.stop())
+
+        // Set currently recording to false
+        currentlyRecording = false;
+
+
       }
-    }
+})
 
-    mediaRecorder.ondataavailable = function(e) {
-      chunks.push(e.data);
-    }
-  }
 
-  let onError = function(err) {
-    console.log('The following error occured: ' + err);
-  }
-
-  navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
-
-} else {
-   console.log('getUserMedia not supported on your browser!');
-}
 
 var submitAnswer = () => {
 
+
   // Make sure that there is an L2 recording
   if (!userL2Recording) {
-    alert("You must record somet")
+    alert("You must record something!")
     return
   }
 
-  scoreURL = '/score' + '/'  + translateToLangCode + '/' + L2TargetWord
+  console.log("Here is what we are submitting!")
+  console.log(userL2Recording);
+
+  var scoreURL = '/score' + '/'  + translateToLangCode + '/' + L2TargetWord
 
   console.log("Here is the recording");
   console.log(userL2Recording);
@@ -137,10 +155,10 @@ var submitAnswer = () => {
 
           if (result['isCorrect']) {
             // https://stackoverflow.com/a/506004
-            redirectURL = result['redirectURL']
+            var redirectURL = result['redirectURL']
             
           } else {
-            redirectURL = result['redirectURL'] + '/' + result['googleHeard'] + '/' + result['targetL2Word'];
+            var redirectURL = result['redirectURL'] + '/' + result['googleHeard'] + '/' + result['targetL2Word'];
           }
 
           window.location.replace(redirectURL);
@@ -192,7 +210,7 @@ var selectLanguages = () => {
 var translateLanguages = () => {
 
   // Get the word from the text box
-  targetL1Word = $('#L1-input-text-box').val();
+  targetL1Word = $("#L1-input-text-box").val()
 
   // Placeholder code for button, we will put ajax call here
   var translateURL = "/translate" + "/" + translateFromLangCode + "/" + translateToLangCode + "/" + targetL1Word;
@@ -226,3 +244,4 @@ var hearAudio = () => {
   L2Audio.play()
 
 }
+

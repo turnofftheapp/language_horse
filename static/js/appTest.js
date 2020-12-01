@@ -7,10 +7,10 @@ window.MediaRecorder = AudioRecorder
 
 // Initialize global variables that will hold the key langauges
 var translateFromLang = "";
-var translateToLang = ""
+var translateToLang = "";
 var translateFromLangCode = "";
 var translateToLangCode = "";
-var targetL1Word = "Hello world";
+var targetL1Word = "";
 var placeHolderMessage = "";
 var rawBase64AudioString = "";
 var currentlyRecording = false;

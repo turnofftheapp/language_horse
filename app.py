@@ -50,8 +50,8 @@ Talisman(app,
 def correct_answer():
 	return render_template('output-correct.html')
 
-@app.route('/score/<string:translate_to_code>/<string:L2TargetWord>', methods=['GET', 'POST'])
-def score(translate_to_code, L2TargetWord):
+@app.route('/score/<string:translate_to_code>/<string:L2TargetWord>/<string:translate_from_code>', methods=['GET', 'POST'])
+def score(translate_to_code, L2TargetWord, translate_from_code):
 
 	
 	# Initialize function variables
@@ -59,6 +59,7 @@ def score(translate_to_code, L2TargetWord):
 	redirect_url = ""
 	recognized_speech = ""
 	error = ""
+	google_heard_audio = ""
 
 
 	# Extract the base 64 encoded string from the incoming ajax post data body
@@ -101,6 +102,17 @@ def score(translate_to_code, L2TargetWord):
 				is_correct = True
 				redirect_url = "/correct_answer"
 
+			# If it is the case that the user is wrong, then synthesize what Google heard
+			else:
+				try:
+					google_heard_audio = translate(translate_from_code,
+								  translate_to_code,
+								  recognized_speech.lower(),
+								  # Hot Fix To Call the Translate Button again but just return the audio string
+								  google_heard=True)
+				except:
+					print("Could not synthesize would google heard")
+
 		# If that fails then set the error
 		except Exception as e:
 			error = str(e)
@@ -110,7 +122,8 @@ def score(translate_to_code, L2TargetWord):
 		return jsonify({"isCorrect": is_correct,
 		                "redirectURL": redirect_url,
 		                "googleHeard": recognized_speech.lower(),
-		                "error": error})
+		                "error": error,
+		                "googleHeardAudio": google_heard_audio})
 
 
 @app.route('/')
@@ -118,7 +131,7 @@ def home():
     return render_template('index.html')
 
 @app.route('/translate/<string:transate_from_code>/<string:translate_to_code>/<string:L1_word>', methods=['GET', 'POST'])
-def translate(transate_from_code, translate_to_code, L1_word):
+def translate(transate_from_code, translate_to_code, L1_word, google_heard=False):
 	
 	# Get the language codes with no dialect suffixes
 	translate_from_code_no_suffix = re.sub(r'-..$', '', transate_from_code)
@@ -164,8 +177,11 @@ def translate(transate_from_code, translate_to_code, L1_word):
 	# Extract the string that we are going to play
 	base_64_audio_string = audio_results['audioContent']
 
-	# Return a JSON response with flask::jsonify to browser
-	return jsonify({"target_word": L2_Target_Word,
+	if google_heard:
+		return base_64_audio_string
+	else:
+		# Return a JSON response with flask::jsonify to browser
+		return jsonify({"target_word": L2_Target_Word,
 					"target_audio": base_64_audio_string})
 
 @app.route('/input')

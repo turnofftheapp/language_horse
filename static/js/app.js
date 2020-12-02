@@ -19,6 +19,7 @@ var rawBase64AudioString = "";
 var currentlyRecording = false;
 var userL2Recording = "";
 var L2TargetWord = "";
+var googleHeardAudio = "";
 
 // Connect to the record button
 const recordButton = document.querySelector('#record-button');
@@ -54,6 +55,20 @@ $( "#try-again-button" ).click(function() {
 
   tryAgain();
   
+});
+
+$( "#lose-screen-targe-word-audio" ).click(function() {
+  hearAudio();
+});
+
+
+$( "#lose-screen-target-word-audio" ).click(function() {
+  hearAudio();
+});
+
+
+$( "#loose-screen-google-heard-audio" ).click(function() {
+  hearGoogleHeard();
 });
 
 let recorder
@@ -142,7 +157,7 @@ var submitAnswer = () => {
   console.log("Here is what we are submitting!")
   console.log(userL2Recording);
 
-  var scoreURL = '/score' + '/'  + translateToLangCode + '/' + L2TargetWord
+  var scoreURL = '/score' + '/'  + translateToLangCode + '/' + L2TargetWord + '/' + translateFromLangCode
 
   console.log("Here is the recording");
   console.log(userL2Recording);
@@ -172,7 +187,11 @@ var submitAnswer = () => {
             $("#you-meant-to-say").text(L2TargetWord);
             
             
+            // Add what google heard to the texbox
             $("#google-heard").text(result['googleHeard']);
+
+            // Add the synthesized audio of what google heard to its global variable
+            googleHeardAudio = result['googleHeardAudio']
 
           }
 
@@ -252,6 +271,19 @@ var translateLanguages = () => {
 
 };
 
+
+// TODO: FACTOR THESE ALL INTO ONE FUNCTION:
+
+var hearL2Audio = () => {
+
+  alert("Close this box to here the audio that you created")
+  // https://stackoverflow.com/a/17762789/5420796
+  var targetL2Audio = new Audio("data:audio/mp3;base64," + userL2Recording)
+  targetL2Audio.play()
+
+}
+
+
 var hearAudio = () => {
 
   // https://stackoverflow.com/a/17762789/5420796
@@ -260,3 +292,10 @@ var hearAudio = () => {
 
 }
 
+var hearGoogleHeard = () => {
+
+  // https://stackoverflow.com/a/17762789/5420796
+  var L2Audio = new Audio("data:audio/wav;base64," + googleHeardAudio)
+  L2Audio.play()
+
+}

@@ -50,6 +50,12 @@ $( "#submit-button" ).click(function() {
   
 });
 
+$( "#try-again-button" ).click(function() {
+
+  tryAgain();
+  
+});
+
 let recorder
 
 // Request permissions to record audio
@@ -116,6 +122,12 @@ recordButton.addEventListener('click', () => {
       }
 })
 
+var tryAgain = () => {
+
+  // Change to the you are wrong screen
+  $('#carousel').slick('slickGoTo', 2)
+
+}
 
 
 var submitAnswer = () => {

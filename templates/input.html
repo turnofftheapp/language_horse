@@ -30,6 +30,7 @@
       <div class="app-content-container">
 
 					<div id="carousel" style="opacity: 0;">
+							
 							<div>
 									<h3 class="page-title text-center">Select Languages</h3>
 
@@ -56,6 +57,7 @@
 										<button id="translate_next" class="btn btn-primary btn-semi-block">Next</button>
 									</div>
 							</div>
+							
 							<div>
 									<h3 class="page-title text-center">Enter Text</h3>
 									<div class="language-selection">
@@ -76,6 +78,7 @@
 											<button id="translate-button" class="btn btn-primary btn-semi-block">Translate</button>
 										</div>
 							</div>
+							
 							<div>
 									<h3 class="page-title text-center">Listen & Record</h3>
 									<div class="language-selection">
@@ -124,11 +127,40 @@
 
 										
 							</div>
-							<div>
-									<h3 class="page-title text-center">Review & Submit</h3>
 
+							<div>
+
+							<div class="app-content output-content">
+										
+								<div class="output-header">
+        						  
+        						  <div class="text-center mg-b-20">
+        						    <div class="output-circle output-circle-red">
+        						      <i class="material-icons">close</i>
+        						    </div>
+        						  </div>
+        						  
+        						  <div class="mg-b-20">
+        						    <div class="form-label">You meant to say:</div>
+        						    <textarea id="you-meant-to-say" class="text-input" rows="2">In progress</textarea>
+        						  </div>
+        						  
+        						  	<div class="mg-b-40">
+        						      <div class="form-label">Google heard:</div>
+        						      <textarea id="google-heard" class="text-input" rows="2"></textarea>
+        						    </div>
+								
+								</div>
+										
+									<div class="text-center mg-b-30">
+        						  		<a href="{{url_for('home')}}" class="btn btn-primary mg-r-15">Start Over</a>
+        						  		<a href="{{url_for('home')}}" class="btn btn-primary mg-l-15">Try Again</a>
+									</div>
 							</div>
-						</div>
+						
+							</div>
+						
+				</div>
 				
        
       </div>

@@ -25,6 +25,10 @@ GOOGLE_SPEECH_TO_TEXT_ENDPOINT_WITH_KEY = GOOGLE_SPEECH_TO_TEXT_ENDPOINT + "?key
 
 NON_200_STATUS_CODES = []
 
+SAMPLE_RATE_HERTZ = 16000
+
+ENCODING_TYPE = "MP3"
+
 # Import the pickle file which contains the langauge pairs
 infile = open('languages_pickle','rb')
 langs = pickle.load(infile)
@@ -49,19 +53,24 @@ def correct_answer():
 @app.route('/score/<string:translate_to_code>/<string:L2TargetWord>', methods=['GET', 'POST'])
 def score(translate_to_code, L2TargetWord):
 
-	r = request.get_json()
-
-	user_L2_recording = r['userL2Recording']
-
-	print("******Start*******")
-	print(user_L2_recording)
-	print("******END*********")
 	
-	# Payload for translation api
+	# Initialize function variables
+	is_correct = False
+	redirect_url = ""
+	recognized_speech = ""
+	error = ""
+
+
+	# Extract the base 64 encoded string from the incoming ajax post data body
+	r = request.get_json()
+	user_L2_recording = r['userL2Recording']
+	
+
+	# Initialize the outgoing payload for the speech to text algorithm
 	google_speech_to_text_payload = {
 		"config": {
-      		"encoding":"MP3",
-      		"sampleRateHertz": 16000,
+      		"encoding": ENCODING_TYPE,
+      		"sampleRateHertz": SAMPLE_RATE_HERTZ,
       		"languageCode": translate_to_code
   		},
   		"audio": {
@@ -69,51 +78,39 @@ def score(translate_to_code, L2TargetWord):
   		}
   	}
 
-	print("****Payload************")
-	print(google_speech_to_text_payload)
-	
+	# Make API request for speech to text algoritm	
 	speech_recognition_result = make_api_request(GOOGLE_SPEECH_TO_TEXT_ENDPOINT_WITH_KEY,
 									 google_speech_to_text_payload,
 									 method='POST')
 
 	
-	# If the make_api_request() method returns false, then send that message tot he
-	# Front end
+	# If the make_api_request() method returns false, then send error saying API call failed
 	if (speech_recognition_result == False):
-		return jsonify({"isCorrect": False,
-		            "redirectURL": "",
-		            "googleHeard": "",
-		            "targetL2Word": "",
-		            "error": "API Request Failed in Backend"})
+		error = "Speech-to-Text API call in the backend"
 	
-	print("****speech_recognition_result****")
-	print(speech_recognition_result)
+	
+	# If the speech recognition result is not Flse
+	elif (speech_recognition_result != False):
 
-	# REFACTOR ALL OF THIS:
-	try:
-		recognized_speech = speech_recognition_result['results'][0]['alternatives'][0]['transcript']
-	except Exception as e:
-		print('Here is the exception: '+ str(e))
-
-		return jsonify({"isCorrect": False,
-		            "redirectURL": "",
-		            "googleHeard": "",
-		            "targetL2Word": "",
-		            "error": str(e)})
-
-
-	if (recognized_speech.lower() == L2TargetWord.lower()):
-		is_correct = True
-		redirect_url = "/correct_answer"
-	else:
-		is_correct = False
-		redirect_url = "/incorrect_answer"
-
-	return jsonify({"isCorrect": is_correct,
-		            "redirectURL": redirect_url,
-		            "googleHeard": recognized_speech.lower(),
-		            "targetL2Word": L2TargetWord.lower()})
+		## Then try to extract the recognized speech
+		try:
+			recognized_speech = speech_recognition_result['results'][0]['alternatives'][0]['transcript']
 		
+			# If the recognized speech equals the L2 target word
+			if (recognized_speech.lower() == L2TargetWord.lower()):
+				is_correct = True
+				redirect_url = "/correct_answer"
+
+		# If that fails then set the error
+		except Exception as e:
+			error = str(e)
+
+
+		# Return the correct values
+		return jsonify({"isCorrect": is_correct,
+		                "redirectURL": redirect_url,
+		                "googleHeard": recognized_speech.lower(),
+		                "error": error})
 
 
 @app.route('/')

@@ -149,12 +149,22 @@ var submitAnswer = () => {
           if (result['isCorrect']) {
             // https://stackoverflow.com/a/506004
             var redirectURL = result['redirectURL']
+            window.location.replace(redirectURL);
             
           } else {
-            var redirectURL = result['redirectURL'] + '/' + result['googleHeard'] + '/' + result['targetL2Word'];
+            
+            // Change to the you are wrong screen
+            $('#carousel').slick('slickGoTo', 3)
+
+            // Update the translate_to box with the result
+            $("#you-meant-to-say").text(L2TargetWord);
+            
+            
+            $("#google-heard").text(result['googleHeard']);
+
           }
 
-          window.location.replace(redirectURL);
+          
           
   }});
 

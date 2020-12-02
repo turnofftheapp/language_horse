@@ -46,15 +46,6 @@ Talisman(app,
 def correct_answer():
 	return render_template('output-correct.html')
 
-@app.route('/incorrect_answer/<string:google_heard>/<string:target_L2_word>')
-def incorrect_answer(google_heard, target_L2_word):
-	## Pass in the correct values to be displayed in this screen
-	
-	incorrect_info = {"googleHeard": google_heard,
-	                 "target_L2_word": target_L2_word}
-
-	return render_template('output-wrong.html', incorrectInfo = incorrect_info)
-
 @app.route('/score/<string:translate_to_code>/<string:L2TargetWord>', methods=['GET', 'POST'])
 def score(translate_to_code, L2TargetWord):
 
@@ -184,14 +175,6 @@ def translate(transate_from_code, translate_to_code, L1_word):
 def view_abc():
     return render_template('input.html', langs=langs)
 
-
-@app.route('/win')
-def win_or_loose():
-    flip = random.randint(0, 1)
-    if flip:
-        return render_template('output-wrong.html')
-    else:
-        return render_template('output-correct.html')
 
 def make_api_request(url, payload, method):
 

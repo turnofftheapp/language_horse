@@ -5,7 +5,7 @@ An awesome language learning applciation to practice your pronunciation
 
 1. Clone this repository `git clone https://github.com/turnofftheapp/language_horse`
 
-2. Install flask `pip3 install flask`
+2. Install flask `pip3 install flask`, `pip3 install flask_talisman`, then `pip3 install requests`
 
 3. Source the flask development commands `source app.env.dev`. These commands configure flask for development
 

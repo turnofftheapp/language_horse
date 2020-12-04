@@ -171,21 +171,16 @@ html {
 	border-color:  #0062cc !important;
 }
 
-.btn-outline-primary {
+.btn-outline-primary, .btn-outline-primary:hover, .btn-outline-primary:focus {
 	background-color: #ffffff;
 	border-color:  #007BFF;
 	color: #007BFF;
 }
 
-.btn-outline-primary:hover {
-	background-color: #ffffff;
-	border-color:  #006fe6;
-	color: #006fe6;
-}
-
-.btn-outline-primary:focus {
-	background-color: #ffffff;
-	border-color:  #006fe6 !important;
+.btn-outline-primary:active {
+	background-color: #007BFF;
+	border-color:  #007BFF;
+	color: #ffffff;
 }
 
 .btn-text-play {

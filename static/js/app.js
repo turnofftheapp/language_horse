@@ -57,8 +57,9 @@ $( "#try-again-button" ).click(function() {
   
 });
 
-$( "#lose-screen-targe-word-audio" ).click(function() {
-  hearAudio();
+
+$( "#loose-screen-google-heard-audio" ).click(function() {
+  hearGoogleHeard();
 });
 
 
@@ -67,9 +68,7 @@ $( "#lose-screen-target-word-audio" ).click(function() {
 });
 
 
-$( "#loose-screen-google-heard-audio" ).click(function() {
-  hearGoogleHeard();
-});
+
 
 let recorder
 
@@ -91,7 +90,6 @@ let recorder
           var base64data = reader.result;
           // Extract the raw base64 string
           userL2Recording = base64data.substr(base64data.indexOf(',')+1)
-          console.log(userL2Recording);
         }
 
 
@@ -154,13 +152,8 @@ var submitAnswer = () => {
     return
   }
 
-  console.log("Here is what we are submitting!")
-  console.log(userL2Recording);
 
   var scoreURL = '/score' + '/'  + translateToLangCode + '/' + L2TargetWord + '/' + translateFromLangCode
-
-  console.log("Here is the recording");
-  console.log(userL2Recording);
 
   $.post({url: scoreURL,
           data: JSON.stringify({'userL2Recording': userL2Recording}),
@@ -294,8 +287,9 @@ var hearAudio = () => {
 
 var hearGoogleHeard = () => {
 
+  console.log("Listening")
   // https://stackoverflow.com/a/17762789/5420796
-  var L2Audio = new Audio("data:audio/wav;base64," + googleHeardAudio)
+  var L2Audio = new Audio("data:audio/mp3;base64," + googleHeardAudio)
   L2Audio.play()
 
 }

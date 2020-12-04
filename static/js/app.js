@@ -81,7 +81,7 @@ $( "#lose-screen-target-word-audio" ).click(function() {
 let recorder
 
 // Request permissions to record audio
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
       
       var chunks = [];
       recorder = new MediaRecorder(stream)
@@ -100,10 +100,8 @@ let recorder
           // Extract the raw base64 string
           userL2Recording = base64data.substr(base64data.indexOf(',')+1)
         }
-
-
       })
-    })
+})
 
             
 recordButton.addEventListener('click', () => {

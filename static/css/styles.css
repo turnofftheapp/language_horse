@@ -171,6 +171,31 @@ html {
 	border-color:  #0062cc !important;
 }
 
+.btn-outline-primary {
+	background-color: #ffffff;
+	border-color:  #007BFF;
+	color: #007BFF;
+}
+
+.btn-outline-primary:hover {
+	background-color: #006fe6;
+	border-color:  #006fe6;
+	color: #ffffff;
+}
+
+.btn-outline-primary:focus {
+	background-color: #0062cc;
+	border-color:  #0062cc !important;
+}
+
+.btn-text-play {
+	height: auto;
+	margin-bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .btn-red {
 	background-color:#FF0000;
 	border-color:  #FF0000;

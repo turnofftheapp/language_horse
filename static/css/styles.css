@@ -178,14 +178,14 @@ html {
 }
 
 .btn-outline-primary:hover {
-	background-color: #006fe6;
+	background-color: #ffffff;
 	border-color:  #006fe6;
-	color: #ffffff;
+	color: #006fe6;
 }
 
 .btn-outline-primary:focus {
-	background-color: #0062cc;
-	border-color:  #0062cc !important;
+	background-color: #ffffff;
+	border-color:  #006fe6 !important;
 }
 
 .btn-text-play {

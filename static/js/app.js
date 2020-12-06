@@ -41,7 +41,7 @@ $( "#hear-pronunciation-button" ).click(function() {
 });
 
 $( "#reset-inputs" ).click(function() {
-  hearL2Audio();
+  $('#carousel').slick('slickGoTo', 0);
 });
 
 $( "#submit-button" ).click(function() {

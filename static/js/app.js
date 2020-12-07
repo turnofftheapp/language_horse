@@ -8,6 +8,19 @@ AudioRecorder.prototype.mimeType = 'audio/mpeg'
 window.MediaRecorder = AudioRecorder
 // End configuration for Polyfill library
 
+
+// Do a check for getUserMedia, if not present then throw an error
+try {
+  navigator.mediaDevices.getUserMedia
+  console.log("User media is supported");
+}
+catch(err) {
+  console.log(err);
+  alert("Greetings Language Learner! Your browser still does not support our recording functionality. If you are on an iPhone, you must use Safari. If you are on an Android you must use Chrome.");
+  window.location.replace("https://language-horse.herokuapp.com/");
+}
+
+
 // Initialize global variables that will hold the key langauges
 var translateFromLang = "";
 var translateToLang = "";

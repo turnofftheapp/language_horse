@@ -185,7 +185,7 @@ def translate(transate_from_code, translate_to_code, L1_word, google_heard=False
 					"target_audio": base_64_audio_string})
 
 @app.route('/input')
-def view_abc():
+def view_input():
     return render_template('input.html', langs=langs)
 
 

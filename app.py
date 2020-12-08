@@ -60,6 +60,7 @@ def score(translate_to_code, L2TargetWord, translate_from_code):
 	recognized_speech = ""
 	error = ""
 	google_heard_audio = ""
+	recognized_speech_confidence = 0
 
 
 	# Extract the base 64 encoded string from the incoming ajax post data body
@@ -96,6 +97,7 @@ def score(translate_to_code, L2TargetWord, translate_from_code):
 		## Then try to extract the recognized speech
 		try:
 			recognized_speech = speech_recognition_result['results'][0]['alternatives'][0]['transcript']
+			recognized_speech_confidence = speech_recognition_result['results'][0]['alternatives'][0]['confidence']
 		
 			# If the recognized speech equals the L2 target word
 			if (recognized_speech.lower() == L2TargetWord.lower()):
@@ -123,7 +125,8 @@ def score(translate_to_code, L2TargetWord, translate_from_code):
 		                "redirectURL": redirect_url,
 		                "googleHeard": recognized_speech.lower(),
 		                "error": error,
-		                "googleHeardAudio": google_heard_audio})
+		                "googleHeardAudio": google_heard_audio,
+		                "recognizedSpeechConfidene": recognized_speech_confidence})
 
 
 @app.route('/')

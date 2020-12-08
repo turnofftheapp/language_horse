@@ -183,6 +183,9 @@ var initListeners = () => {
               }
     
               if (result['isCorrect']) {
+
+                console.log("Google is this confident in it's transcription: ");
+                console.log(result['recognizedSpeechConfidene']);
                 // https://stackoverflow.com/a/506004
                 var redirectURL = result['redirectURL']
                 window.location.replace(redirectURL);
@@ -200,7 +203,10 @@ var initListeners = () => {
                 $("#google-heard").text(result['googleHeard']);
     
                 // Add the synthesized audio of what google heard to its global variable
-                googleHeardAudio = result['googleHeardAudio']
+                googleHeardAudio = result['googleHeardAudio'];
+
+                console.log("Google is this confident in it's transcription: ");
+                console.log(result['recognizedSpeechConfidene']);
     
               }
     

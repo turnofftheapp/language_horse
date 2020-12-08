@@ -161,6 +161,12 @@ html {
 	color: #fff;
 }
 
+.btn-warning {
+	background-color: #9400D3;
+	border-color:  #007BFF;
+	color: #fff;
+}
+
 .btn-primary:hover {
 	background-color: #006fe6;
 	border-color:  #006fe6;

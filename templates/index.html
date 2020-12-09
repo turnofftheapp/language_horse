@@ -16,6 +16,21 @@
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
 
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-24RX2JPELZ"></script>
+	<script>
+  		window.dataLayer = window.dataLayer || [];
+  		function gtag(){dataLayer.push(arguments);}
+  		gtag('js', new Date());
+  		gtag('config', 'G-24RX2JPELZ');
+	</script>
+	
+    <script src="{{url_for('static', filename='lib/jquery/jquery-3.5.1.min.js')}}"> </script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+
 </head>
 
 <body>

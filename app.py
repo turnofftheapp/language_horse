@@ -97,7 +97,12 @@ def score(translate_to_code, L2TargetWord, translate_from_code):
 		## Then try to extract the recognized speech
 		try:
 			recognized_speech = speech_recognition_result['results'][0]['alternatives'][0]['transcript']
-			recognized_speech_confidence = speech_recognition_result['results'][0]['alternatives'][0]['confidence']
+			
+			try:
+				recognized_speech_confidence = speech_recognition_result['results'][0]['alternatives'][0]['confidence']
+			except Exception as e:
+				print("No confidence for this pair")
+				print(str(e))
 		
 			# If the recognized speech equals the L2 target word
 			if (recognized_speech.lower() == L2TargetWord.lower()):

@@ -36,6 +36,8 @@ var initListeners = () => {
     var userL2Recording = "";
     var L2TargetWord = "";
     var googleHeardAudio = "";
+    let recorder;
+    var firstTime = true;
     
     // Connect to the record button
     const recordButton = document.querySelector('#record-button');
@@ -87,10 +89,11 @@ var initListeners = () => {
       alert("We made this game so you can show off your language skills, and practice! Start out with easy words in languages you know. Try to say 'table', in Spanish. Then try languages you don't know. Try to say 'horse' in Thai. Language Horse works using Google translate's Speech-To-Text and Text-To-Speech features. Contact us! LanguageHorse@gmail.com, Credits: Project Leader: Graham Derry, Lead Developer: Max Carey (TOTAGO)")
     });
     
-    let recorder
     
-    // Request permissions to record audio
-        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+    var initMic = (firstTime) => {
+
+          // Request permissions to record audio
+          navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
           
           var chunks = [];
           recorder = new MediaRecorder(stream)
@@ -113,15 +116,18 @@ var initListeners = () => {
           })
         })
     
+      // Only add the event listener the first time the mic gets turned on
+      // Otherwise there will be multiple event listeners being called a bunch
+      if (firstTime) {
                 
-    recordButton.addEventListener('click', () => {
+        recordButton.addEventListener('click', () => {
     
-      if (!currentlyRecording) {
+        if (!currentlyRecording) {
         
         // Start recording
         recorder.start()
     
-        console.log("recorder started");        
+        console.log("recorder started!");        
         // Changing background here is redundant the first time around
         // It is to undo the change on line 69 below
         $('#record-button').css('background','#FF0000');
@@ -150,10 +156,15 @@ var initListeners = () => {
     
     
           }
-    })
+        })
+      }
+  }
+
     
     var tryAgain = () => {
     
+      initMic(firstTime=false);
+
       // Change to the you are wrong screen
       $('#carousel').slick('slickGoTo', 2)
     
@@ -161,7 +172,6 @@ var initListeners = () => {
     
     
     var submitAnswer = () => {
-    
     
       // Make sure that there is an L2 recording
       if (!userL2Recording) {
@@ -192,6 +202,9 @@ var initListeners = () => {
                 window.location.replace(redirectURL);
                 
               } else {
+
+                // Close mic button in browser
+                recorder.stream.getTracks().forEach(i => i.stop())
                 
                 // Change to the you are wrong screen
                 $('#carousel').slick('slickGoTo', 3)
@@ -259,6 +272,8 @@ var initListeners = () => {
     
     var translateLanguages = () => {
     
+      initMic(firstTime);
+      
       // Get the word from the text box
       targetL1Word = $("#L1-input-text-box").val()
     

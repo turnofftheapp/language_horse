@@ -172,6 +172,21 @@ var initListeners = () => {
     
     
     var submitAnswer = () => {
+
+      // If user is currently recording, then stop recording and send alert
+      if (currentlyRecording) {
+        // Stop recording
+        recorder.stop()
+        console.log("Stopping media recording");
+        $('#record-button').css('color','red');
+        $('#record-button').css('background','#dfe0e1');
+        $('#record-button-text').text('Re-record');
+            
+        // Set currently recording to false
+        currentlyRecording = false;
+        alert("Recording Stopped, Press Submit Again, You can stop recording by pressing the record button again");
+        return
+      }
     
       // Make sure that there is an L2 recording
       if (!userL2Recording) {

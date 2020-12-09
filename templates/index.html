@@ -22,10 +22,10 @@
 	
 	<div class="splash-bg">
 		<div class="app-header">
-			<a href="#">
+			<a style="visibility: hidden;" href="#">
 				<i class="material-icons">settings</i>
 			</a>
-			<a href="#">
+			<a id="question-mark" href="#">
 				<i class="material-icons">help</i>
 			</a>
 		</div>
@@ -41,7 +41,7 @@
 		</div>
 	</div>
 
-
+	<script type="module" src="{{url_for('static', filename='js/landing-page.js')}}"></script>
 
 	<script src={{url_for('static', filename='lib/jquery/jquery-3.5.1.min.js')}}></script>
 

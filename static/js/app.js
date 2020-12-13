@@ -188,6 +188,7 @@ var initListeners = () => {
       if (currentlyRecording) {
         // Stop recording
         recorder.stop()
+        $('#audio-bar-canvas').css('visibility', 'hidden');
         console.log("Stopping media recording");
         $('#record-button').css('color','red');
         $('#record-button').css('background','#dfe0e1');

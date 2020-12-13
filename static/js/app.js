@@ -196,7 +196,7 @@ var initListeners = () => {
             
         // Set currently recording to false
         currentlyRecording = false;
-        alert("Recording Stopped, Press Submit Again, You can stop recording by pressing the record button again");
+        alert("Press Submit again to see if you're correct");
         return
       }
     

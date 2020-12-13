@@ -98,6 +98,7 @@
 							
 							<div>
 									<h3 class="page-title text-center">Listen & Record</h3>
+									
 									<div class="language-selection">
 											<div class="language-col">
 												<label class="form-label">Translated from</label>
@@ -114,8 +115,9 @@
 													</div>
 											</div>
 										</div>
-										<div class="text-center mg-b-20">
-												<button id="reset-inputs"class="btn btn-default">Reset Inputs</button>
+										
+										<div class="mg-b-20">
+											<canvas id="audio-bar-canvas" class="visualizer" height="60px" fill="#fff" style="width: 100%; border-radius: 10px; visibility: hidden;"></canvas>
 										</div>
 
 										<div class="audio-controls mg-b-40">
@@ -130,7 +132,15 @@
 													</div>
 												</div>
 
-
+												<div class="audio-control-col">
+													<button id="reset-inputs"class="btn btn-default btn-circle">
+														<i class="material-icons">replay</i>
+													</button>
+													<div class="text-light">
+														Reset
+													</div>
+												</div>
+												
 												<div class="audio-control-col">
 													<button id="hear-pronunciation-button" class="btn btn-circle btn-default">
 															<i class="material-icons">volume_up</i>

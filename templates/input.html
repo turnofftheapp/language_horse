@@ -214,12 +214,50 @@ https://docs.google.com/forms/d/e/1FAIpQLSdsffxuVLedxKP0IXWLkZNdbZ-HcDP3WX3VZWCe
 							</div>
 						
 				</div>
+
+				<div>
+
+		<div class="app-content output-content">
+    			
+    		<div class="app-content-container text-center">
+
+				<div class="output-header">
+					<div class="output-circle output-circle-green">
+						<i class="material-icons">done</i>
+          			</div>
+          			<div>
+            			<div class="output-badge output-badge-green">Correct!</div>
+          			</div>
+				</div>
+				
+        	<div class="text-center mg-b-30">
+        	
+
+        		<div class="mg-b-20">
+					<div class="form-label">Google heard:</div>
+					<div style="display: flex;">
+					<textarea id="google-heard" class="text-input" rows="2"></textarea>
+        			<button id="loose-screen-google-heard-audio" class="btn btn-outline-primary 	btn-text-play mg-l-15">
+					<i class="material-icons">volume_up</i>
+					<!-- <i class="material-icons">play_arrow</i> -->
+					</button>
+        			</div>
+        		</div>
+	
+        		<a href="{{url_for('home')}}" class="btn btn-primary mg-r-15">Play Again</a>
+        		<a href="https://docs.google.com/forms/d/e/1FAIpQLSdsffxuVLedxKP0IXWLkZNdbZ-HcDP3WX3VZWCeHvKJ6cYz1g/viewform?usp=sf_link" class="btn btn-warning mg-l-15">Feedback!</a>
+
+        	</div>
+
+			</div>
+		
+		</div>
+
+				</div>
 				
        
       </div>
     </div>
-
-
 
 		<script type="text/javascript module" src="{{ url_for('static', filename='node_modules/audio-recorder-polyfill/index.js')}}"></script>
 

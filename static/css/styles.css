@@ -384,6 +384,7 @@ html {
 .output-badge.output-badge-green {
 	background-color: #28A745;
 	color: #fff;
+	margin-bottom: 30px;
 }
 
 @media (max-width: 575px) {

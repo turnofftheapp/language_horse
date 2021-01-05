@@ -103,7 +103,6 @@ def score(translate_to_code, L2TargetWord, translate_from_code):
 			# If the recognized speech equals the L2 target word
 			if (recognized_speech.lower() == L2TargetWord.lower()):
 				is_correct = True
-				redirect_url = "/correct_answer"
 
 			# If it is the case that the user is wrong, then synthesize what Google heard
 			else:
@@ -123,7 +122,6 @@ def score(translate_to_code, L2TargetWord, translate_from_code):
 
 		# Return the correct values
 		return jsonify({"isCorrect": is_correct,
-		                "redirectURL": redirect_url,
 		                "googleHeard": recognized_speech.lower(),
 		                "error": error,
 		                "googleHeardAudio": google_heard_audio,

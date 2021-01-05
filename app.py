@@ -46,10 +46,6 @@ Talisman(app,
 	     content_security_policy=csp)
 
 
-@app.route('/correct_answer')
-def correct_answer():
-	return render_template('output-correct.html')
-
 @app.route('/score/<string:translate_to_code>/<string:L2TargetWord>/<string:translate_from_code>', methods=['GET', 'POST'])
 def score(translate_to_code, L2TargetWord, translate_from_code):
 

@@ -77,9 +77,7 @@ var initListeners = () => {
     });
     
     $( "#try-again-button" ).click(function() {
-    
       tryAgain();
-      
     });
     
     
@@ -91,10 +89,14 @@ var initListeners = () => {
     $( "#win-screen-google-heard-audio" ).click(function() {
       hearAudio();
     });
-    
-    
+
     $( "#lose-screen-target-word-audio" ).click(function() {
       hearAudio();
+    });
+    
+    
+    $( "#win-screen-target-word-audio" ).click(function() {
+      hearL2Audio();
     });
     
     $( "#question-mark" ).click(function() {
@@ -231,9 +233,12 @@ var initListeners = () => {
                 console.log("Google is this confident in it's transcription: ");
                 console.log(result['recognizedSpeechConfidene']);
 
-                // Add the target word and target lan gauge to correct screen
-                $('#correct-screen-target-word').text(L2TargetWord);
-                $('#correct-screen-target-language').text(translateToLang);
+                
+                var message = "You said " + L2TargetWord + " in " + translateToLang + ". Click to listen!";
+                $('#correct-screen-target-word').text(message);
+                
+                $('#correct-screen-target-word-your-recording').text("Click to listen to your recording ->");
+                
 
                 // Change to the you are correct screen
                 $('#carousel').slick('slickGoTo', 4);
@@ -269,7 +274,6 @@ var initListeners = () => {
     
     var hearL2Audio = () => {
     
-      alert("Close this box to here the audio that you created")
       // https://stackoverflow.com/a/17762789/5420796
       var targetL2Audio = new Audio("data:audio/mp3;base64," + userL2Recording)
       targetL2Audio.play()
@@ -341,18 +345,15 @@ var initListeners = () => {
     
     
     // TODO: FACTOR THESE ALL INTO ONE FUNCTION:
+    var hearAudio = () => {
     
-    var hearL2Audio = () => {
-    
-      alert("Close this box to here the audio that you created")
       // https://stackoverflow.com/a/17762789/5420796
-      var targetL2Audio = new Audio("data:audio/mp3;base64," + userL2Recording)
-      targetL2Audio.play()
+      var L2Audio = new Audio("data:audio/wav;base64," + rawBase64AudioString)
+      L2Audio.play()
     
     }
-    
-    
-    var hearAudio = () => {
+
+    var hearUserRecording = () => {
     
       // https://stackoverflow.com/a/17762789/5420796
       var L2Audio = new Audio("data:audio/wav;base64," + rawBase64AudioString)

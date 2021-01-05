@@ -86,6 +86,11 @@ var initListeners = () => {
     $( "#loose-screen-google-heard-audio" ).click(function() {
       hearGoogleHeard();
     });
+
+
+    $( "#win-screen-google-heard-audio" ).click(function() {
+      hearAudio();
+    });
     
     
     $( "#lose-screen-target-word-audio" ).click(function() {
@@ -222,11 +227,16 @@ var initListeners = () => {
     
               if (result['isCorrect']) {
 
+                console.log("You got the answer correct")
                 console.log("Google is this confident in it's transcription: ");
                 console.log(result['recognizedSpeechConfidene']);
-                // https://stackoverflow.com/a/506004
-                var redirectURL = result['redirectURL']
-                window.location.replace(redirectURL);
+
+                // Add the target word and target lan gauge to correct screen
+                $('#correct-screen-target-word').text(L2TargetWord);
+                $('#correct-screen-target-language').text(translateToLang);
+
+                // Change to the you are correct screen
+                $('#carousel').slick('slickGoTo', 4);
                 
               } else {
 

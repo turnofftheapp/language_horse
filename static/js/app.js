@@ -234,7 +234,7 @@ var initListeners = () => {
                 console.log(result['recognizedSpeechConfidene']);
 
                 
-                var message = "You said " + L2TargetWord + " in " + translateToLang + ". Click to listen!";
+                var message = "You said " + L2TargetWord + " in " + translateToLang + " -> Click to listen!";
                 $('#correct-screen-target-word').text(message);
                 
                 $('#correct-screen-target-word-your-recording').text("Click to listen to your recording ->");

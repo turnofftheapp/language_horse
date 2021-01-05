@@ -11,6 +11,8 @@ window.MediaRecorder = AudioRecorder
 var showAudioBar;
 
 // Check for the Audio Context API
+// It appears to be the caes that you do not need to even turn on the Modern Web Audio API
+// Code adapted from: https://stackoverflow.com/a/29373891/5420796
 var AudioContext = window.AudioContext // Default
     || window.webkitAudioContext // Safari and old versions of Chrome
     || false; 

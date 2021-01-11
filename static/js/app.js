@@ -93,7 +93,11 @@ var initListeners = () => {
     });
     
     
-    $( "#win-screen-target-word-audio" ).click(function() {
+    $( "#win-screen-target-word-audio").click(function() {
+      hearAudio(userL2Recording);
+    });
+
+    $( "#lose-screen-user-audio").click(function() {
       hearAudio(userL2Recording);
     });
     

@@ -62,7 +62,7 @@ var initListeners = () => {
     })
     
     $( "#hear-pronunciation-button" ).click(function() {
-      hearAudio();
+      hearAudio(rawBase64AudioString);
     });
     
     $( "#reset-inputs" ).click(function() {
@@ -70,8 +70,6 @@ var initListeners = () => {
     });
     
     $( "#submit-button" ).click(function() {
-      // This method we should keep for testing purposes
-      //hearL2Audio();
       submitAnswer();
       
     });
@@ -82,21 +80,21 @@ var initListeners = () => {
     
     
     $( "#loose-screen-google-heard-audio" ).click(function() {
-      hearGoogleHeard();
+      hearAudio(googleHeardAudio);
     });
 
 
     $( "#win-screen-google-heard-audio" ).click(function() {
-      hearAudio();
+      hearAudio(rawBase64AudioString);
     });
 
     $( "#lose-screen-target-word-audio" ).click(function() {
-      hearAudio();
+      hearAudio(rawBase64AudioString);
     });
     
     
     $( "#win-screen-target-word-audio" ).click(function() {
-      hearL2Audio();
+      hearAudio(userL2Recording);
     });
     
     $( "#question-mark" ).click(function() {
@@ -272,14 +270,6 @@ var initListeners = () => {
     
     }
     
-    var hearL2Audio = () => {
-    
-      // https://stackoverflow.com/a/17762789/5420796
-      var targetL2Audio = new Audio("data:audio/mp3;base64," + userL2Recording)
-      targetL2Audio.play()
-    
-    }
-    
     var selectLanguages = () => {
       // Grab the langauge data from the UI
       translateFromLang = $("#ddl_lang_from :selected").text();
@@ -343,32 +333,14 @@ var initListeners = () => {
     
     };
     
-    
-    // TODO: FACTOR THESE ALL INTO ONE FUNCTION:
-    var hearAudio = () => {
+    var hearAudio = (audio) => {
     
       // https://stackoverflow.com/a/17762789/5420796
-      var L2Audio = new Audio("data:audio/wav;base64," + rawBase64AudioString)
-      L2Audio.play()
-    
-    }
-
-    var hearUserRecording = () => {
-    
-      // https://stackoverflow.com/a/17762789/5420796
-      var L2Audio = new Audio("data:audio/wav;base64," + rawBase64AudioString)
+      var L2Audio = new Audio("data:audio/wav;base64," + audio)
       L2Audio.play()
     
     }
     
-    var hearGoogleHeard = () => {
-    
-      console.log("Listening")
-      // https://stackoverflow.com/a/17762789/5420796
-      var L2Audio = new Audio("data:audio/mp3;base64," + googleHeardAudio)
-      L2Audio.play()
-    
-    }
 }
 
 function visualize(stream) {

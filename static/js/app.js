@@ -28,7 +28,7 @@ var specialEndpointData = getSyncScriptParams();
 
 // For Vanilla Javascript, Wrap everything in an initListeners() function and
 // Call this function at the end
-var initListeners = () => {
+var initListeners = (L2TargetWord, translateToLangCode) => {
 
     // Do a check for getUserMedia, if not present then throw an error
     try {
@@ -69,7 +69,11 @@ var initListeners = () => {
     })
     
     $( "#translate-button" ).click(function() {
-      translateLanguages();
+      // Get the word from the text box
+      targetL1Word = $("#L1-input-text-box").val()
+
+      // Pass it in as a parameter
+      translateLanguages(targetL1Word);
     })
     
     $( "#hear-pronunciation-button" ).click(function() {
@@ -316,12 +320,9 @@ var initListeners = () => {
       $('#carousel').slick('slickGoTo', 1)
     };
     
-    var translateLanguages = () => {
+    var translateLanguages = (targetL1Word) => {
     
       initMic(firstTime);
-      
-      // Get the word from the text box
-      targetL1Word = $("#L1-input-text-box").val()
     
       // Placeholder code for button, we will put ajax call here
       var translateURL = "/translate" + "/" + translateFromLangCode + "/" + translateToLangCode + "/" + targetL1Word;
@@ -339,6 +340,8 @@ var initListeners = () => {
         rawBase64AudioString = result["target_audio"]
     
         $('#carousel').slick('slickGoTo', 2)
+
+        $('body').show();
         
         
       }});
@@ -355,7 +358,15 @@ var initListeners = () => {
       L2Audio.play()
     
     }
-    
+
+    if (specialEndpointData.L2TargetWord && specialEndpointData.translateToLangCode) {
+
+      $('body').hide();//hide
+
+      translateToLangCode = specialEndpointData.translateToLangCode;     
+      translateFromLangCode = 'en-US'
+      translateLanguages(specialEndpointData.L2TargetWord);
+    }   
 }
 
 function visualize(stream) {
@@ -416,4 +427,4 @@ function visualize(stream) {
 }
 
 
-initListeners();
+initListeners(specialEndpointData.L2TargetWord, specialEndpointData.translateToLangCode);

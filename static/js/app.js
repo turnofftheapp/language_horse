@@ -340,9 +340,9 @@ var initListeners = (L2TargetWord, translateToLangCode) => {
         rawBase64AudioString = result["target_audio"]
     
         $('#carousel').slick('slickGoTo', 2)
-
-        $('body').show();
         
+        // Show everything once the function call is done
+        $('body').show();
         
       }});
     
@@ -361,7 +361,8 @@ var initListeners = (L2TargetWord, translateToLangCode) => {
 
     if (specialEndpointData.L2TargetWord && specialEndpointData.translateToLangCode) {
 
-      $('body').hide();//hide
+      // Hide everything while we wait for results of translateLanguages()
+      $('body').hide();
 
       translateToLangCode = specialEndpointData.translateToLangCode;     
       translateFromLangCode = 'en-US'

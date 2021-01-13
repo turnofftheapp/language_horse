@@ -14,6 +14,17 @@ const canvas = document.querySelector('#audio-bar-canvas');
 let audioCtx;
 const canvasCtx = canvas.getContext("2d");
 
+// Out of Box solution to get script parameter
+// https://stackoverflow.com/a/21253793/5420796
+function getSyncScriptParams() {
+         var scripts = document.getElementsByTagName('script');
+         var lastScript = scripts[scripts.length-2];
+         var scriptName = lastScript;
+         return {"translateToLangCode": scriptName.getAttribute('data-translate-to-code'),
+                "L2TargetWord": scriptName.getAttribute('data-target-word')}
+}
+
+var specialEndpointData = getSyncScriptParams();
 
 // For Vanilla Javascript, Wrap everything in an initListeners() function and
 // Call this function at the end

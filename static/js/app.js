@@ -8,6 +8,24 @@ AudioRecorder.prototype.mimeType = 'audio/mpeg'
 window.MediaRecorder = AudioRecorder
 // End configuration for Polyfill library
 
+var showAudioBar;
+
+// Check for the Audio Context API
+// It appears to be the caes that you do not need to even turn on the Modern Web Audio API
+// Code adapted from: https://stackoverflow.com/a/29373891/5420796
+var AudioContext = window.AudioContext // Default
+    || window.webkitAudioContext // Safari and old versions of Chrome
+    || false; 
+
+if (AudioContext) {
+  console.log("Web Audio API is supported");
+  showAudioBar = true;
+    
+} else {
+    console.log("Web Audio API not supported");
+    showAudioBar = false;
+    alert("By the way, the Web Audio API is not supported by your browser. For a better experience activate this feature on Safari (Settings -> Safari -> Advanced -> Experimental Features -> Web Audio API)  ");
+}
 
 // Visaulizer set up
 const canvas = document.querySelector('#audio-bar-canvas');
@@ -104,8 +122,13 @@ var initListeners = () => {
           
           var chunks = [];
           recorder = new MediaRecorder(stream)
-          visualize(stream);
-         
+          
+          
+          // Only show the audio bar if the Web Audio API is supported
+          // showAudioBar is set at top of file
+          if (showAudioBar) {
+            visualize(stream);
+          }
       
           // Convert blob to base 64 string when finished
           recorder.addEventListener('dataavailable', e => {

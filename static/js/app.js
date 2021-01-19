@@ -32,10 +32,21 @@ const canvas = document.querySelector('#audio-bar-canvas');
 let audioCtx;
 const canvasCtx = canvas.getContext("2d");
 
+// Out of Box solution to get script parameter
+// https://stackoverflow.com/a/21253793/5420796
+function getSyncScriptParams() {
+         var scripts = document.getElementsByTagName('script');
+         var lastScript = scripts[scripts.length-2];
+         var scriptName = lastScript;
+         return {"translateToLangCode": scriptName.getAttribute('data-translate-to-code'),
+                "L2TargetWord": scriptName.getAttribute('data-target-word')}
+}
+
+var specialEndpointData = getSyncScriptParams();
 
 // For Vanilla Javascript, Wrap everything in an initListeners() function and
 // Call this function at the end
-var initListeners = () => {
+var initListeners = (L2TargetWord, translateToLangCode) => {
 
     // Do a check for getUserMedia, if not present then throw an error
     try {
@@ -76,11 +87,15 @@ var initListeners = () => {
     })
     
     $( "#translate-button" ).click(function() {
-      translateLanguages();
+      // Get the word from the text box
+      targetL1Word = $("#L1-input-text-box").val()
+
+      // Pass it in as a parameter
+      translateLanguages(targetL1Word);
     })
     
     $( "#hear-pronunciation-button" ).click(function() {
-      hearAudio();
+      hearAudio(rawBase64AudioString);
     });
     
     $( "#reset-inputs" ).click(function() {
@@ -88,26 +103,35 @@ var initListeners = () => {
     });
     
     $( "#submit-button" ).click(function() {
-      // This method we should keep for testing purposes
-      //hearL2Audio();
       submitAnswer();
       
     });
     
     $( "#try-again-button" ).click(function() {
-    
       tryAgain();
-      
     });
     
     
     $( "#loose-screen-google-heard-audio" ).click(function() {
-      hearGoogleHeard();
+      hearAudio(googleHeardAudio);
+    });
+
+
+    $( "#win-screen-google-heard-audio" ).click(function() {
+      hearAudio(rawBase64AudioString);
+    });
+
+    $( "#lose-screen-target-word-audio" ).click(function() {
+      hearAudio(rawBase64AudioString);
     });
     
     
-    $( "#lose-screen-target-word-audio" ).click(function() {
-      hearAudio();
+    $( "#win-screen-target-word-audio").click(function() {
+      hearAudio(userL2Recording);
+    });
+
+    $( "#lose-screen-user-audio").click(function() {
+      hearAudio(userL2Recording);
     });
     
     $( "#question-mark" ).click(function() {
@@ -245,11 +269,19 @@ var initListeners = () => {
     
               if (result['isCorrect']) {
 
+                console.log("You got the answer correct")
                 console.log("Google is this confident in it's transcription: ");
                 console.log(result['recognizedSpeechConfidene']);
-                // https://stackoverflow.com/a/506004
-                var redirectURL = result['redirectURL']
-                window.location.replace(redirectURL);
+
+                
+                var message = "You said " + L2TargetWord + " in " + translateToLang + " -> Click to listen!";
+                $('#correct-screen-target-word').text(message);
+                
+                $('#correct-screen-target-word-your-recording').text("Click to listen to your recording ->");
+                
+
+                // Change to the you are correct screen
+                $('#carousel').slick('slickGoTo', 4);
                 
               } else {
 
@@ -277,15 +309,6 @@ var initListeners = () => {
               
               
       }});
-    
-    }
-    
-    var hearL2Audio = () => {
-    
-      alert("Close this box to here the audio that you created")
-      // https://stackoverflow.com/a/17762789/5420796
-      var targetL2Audio = new Audio("data:audio/mp3;base64," + userL2Recording)
-      targetL2Audio.play()
     
     }
     
@@ -320,12 +343,9 @@ var initListeners = () => {
       $('#carousel').slick('slickGoTo', 1)
     };
     
-    var translateLanguages = () => {
+    var translateLanguages = (targetL1Word) => {
     
       initMic(firstTime);
-      
-      // Get the word from the text box
-      targetL1Word = $("#L1-input-text-box").val()
     
       // Placeholder code for button, we will put ajax call here
       var translateURL = "/translate" + "/" + translateFromLangCode + "/" + translateToLangCode + "/" + targetL1Word;
@@ -344,6 +364,8 @@ var initListeners = () => {
     
         $('#carousel').slick('slickGoTo', 2)
         
+        // Show everything once the function call is done
+        $('body').show();
         
       }});
     
@@ -352,35 +374,23 @@ var initListeners = () => {
     
     };
     
-    
-    // TODO: FACTOR THESE ALL INTO ONE FUNCTION:
-    
-    var hearL2Audio = () => {
-    
-      alert("Close this box to here the audio that you created")
-      // https://stackoverflow.com/a/17762789/5420796
-      var targetL2Audio = new Audio("data:audio/mp3;base64," + userL2Recording)
-      targetL2Audio.play()
-    
-    }
-    
-    
-    var hearAudio = () => {
+    var hearAudio = (audio) => {
     
       // https://stackoverflow.com/a/17762789/5420796
-      var L2Audio = new Audio("data:audio/wav;base64," + rawBase64AudioString)
+      var L2Audio = new Audio("data:audio/wav;base64," + audio)
       L2Audio.play()
     
     }
-    
-    var hearGoogleHeard = () => {
-    
-      console.log("Listening")
-      // https://stackoverflow.com/a/17762789/5420796
-      var L2Audio = new Audio("data:audio/mp3;base64," + googleHeardAudio)
-      L2Audio.play()
-    
-    }
+
+    if (specialEndpointData.L2TargetWord && specialEndpointData.translateToLangCode) {
+
+      // Hide everything while we wait for results of translateLanguages()
+      $('body').hide();
+
+      translateToLangCode = specialEndpointData.translateToLangCode;     
+      translateFromLangCode = 'en-US'
+      translateLanguages(specialEndpointData.L2TargetWord);
+    }   
 }
 
 function visualize(stream) {
@@ -441,4 +451,4 @@ function visualize(stream) {
 }
 
 
-initListeners();
+initListeners(specialEndpointData.L2TargetWord, specialEndpointData.translateToLangCode);

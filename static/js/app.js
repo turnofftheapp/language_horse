@@ -194,8 +194,6 @@ var initListeners = (L2TargetWord, translateToLangCode) => {
         
     
           } else {
-    
-            console.log("going to stop recoring my friend!")
             
             // Stop recording
             recorder.stop()

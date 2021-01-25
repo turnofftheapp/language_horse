@@ -319,6 +319,11 @@ var initListeners = (L2TargetWord, translateToLangCode) => {
 
                 // Change to the you are correct screen
                 $('#carousel').slick('slickGoTo', 4);
+
+                // Also turn of the mic stream once you get the correct scereen
+                // There is no way to "try again" form the correct screen don't have
+                // to worry about turning mic back on, for now
+                recorder.stream.getTracks().forEach(i => i.stop())
                 
               } else {
 

@@ -77,6 +77,43 @@ var initListeners = (L2TargetWord, translateToLangCode) => {
     
     // Connect to the record button
     const recordButton = document.querySelector('#record-button');
+
+    
+    // Check for the user coming back into focus
+    $(window).focus(function() {
+
+      // IF there is already a target word then
+      // turn the mic back on
+      if (L2TargetWord != "") {
+
+
+        console.log("Starting mic inpput");
+
+        // We want to turn the mic on
+        // Only if the user left off on the third screen
+        initMic(firstTime=false);
+      }
+
+
+
+    });
+
+    // Listener to check when user leaves tab
+    $(window).blur(function() {
+
+      // If L2TargetWord is not a blank string
+      // That means the mic stream is on
+
+      if (L2TargetWord != "") {
+
+        console.log("Stopping mic input");
+
+        // Close mic stream
+        recorder.stream.getTracks().forEach(i => i.stop())
+
+      }
+      
+    });
     
     // Set the default value as English in the drop down
     $('#ddl_lang_from').val('English (US)')

@@ -231,8 +231,7 @@ var initListeners = (L2TargetWord, translateToLangCode) => {
         
     
           } else {
-    
-    
+            
             // Stop recording
             recorder.stop()
 
@@ -266,31 +265,8 @@ var initListeners = (L2TargetWord, translateToLangCode) => {
     }
     
     
-    var submitAnswer = () => {
+    var sendAnswer = () => {
 
-      // If user is currently recording, then stop recording and send alert
-      if (currentlyRecording) {
-        // Stop recording
-        recorder.stop()
-        $('#audio-bar-canvas').css('visibility', 'hidden');
-        console.log("Stopping media recording");
-        $('#record-button').css('color','red');
-        $('#record-button').css('background','#dfe0e1');
-        $('#record-button-text').text('Re-record');
-            
-        // Set currently recording to false
-        currentlyRecording = false;
-        alert("Press Submit again to see if you're correct");
-        return
-      }
-    
-      // Make sure that there is an L2 recording
-      if (!userL2Recording) {
-        alert("You must record something!")
-        return
-      }
-    
-    
       var scoreURL = '/score' + '/'  + translateToLangCode + '/' + L2TargetWord + '/' + translateFromLangCode
     
       $.post({url: scoreURL,
@@ -347,10 +323,49 @@ var initListeners = (L2TargetWord, translateToLangCode) => {
                 console.log(result['recognizedSpeechConfidene']);
     
               }
-    
-              
               
       }});
+
+    }
+
+    var submitAnswer = () => {
+
+      
+      // In the case you press the record button to turn off recording
+      // Then press the submit button
+      if (userL2Recording != "") { 
+        sendAnswer();
+      }
+
+      // In case you press submit button before having recorded.
+      if (!currentlyRecording) {
+        if (userL2Recording=="") {
+          alert("you must record something");
+          return
+        }
+      }
+
+      // In the case you press the record button directly
+      if (currentlyRecording) {
+        // Stop recording
+        recordButton.click();
+        
+            
+        // After simulating the click event
+        // We have to wait until userL2Recording has been saved
+        // Before we sendTheanswer
+        // Solution: https://stackoverflow.com/a/7308023/5420796
+        function waitForElement(){
+          if(userL2Recording !== ""){
+            sendAnswer();
+        }
+          else{
+            console.log("Not ready");
+            setTimeout(waitForElement, 250);
+          }
+        }
+        waitForElement(); 
+      }
     
     }
     

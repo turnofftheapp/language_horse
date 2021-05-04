@@ -1,4 +1,5 @@
 # Language Horse
+[Play it here](https://language-horse.herokuapp.com/)
 An awesome language learning applciation to practice your pronunciation
 
 ## Instructions to run app locally:

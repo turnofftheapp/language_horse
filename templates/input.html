@@ -102,7 +102,7 @@
 									<div class="language-selection">
 											<div class="language-col">
 												<label class="form-label">Translated from</label>
-												<span class="badge-language translate-from-label">English</span>
+												<span class="badge-language translate-from-label"> {{ friendlyNameFrom }}</span>
 												<div class="text-input-container narrow-right">
 														<textarea id="L1-target-word" placeholder="Type here.." class="text-input" rows="3"></textarea>
 													</div>
@@ -294,7 +294,7 @@ https://docs.google.com/forms/d/e/1FAIpQLSdsffxuVLedxKP0IXWLkZNdbZ-HcDP3WX3VZWCe
 		
 		<script src="{{url_for('static', filename='lib/slick/slick.min.js')}}"></script>
 
-		<script type="module" src="{{url_for('static', filename='js/app.js')}}" data-target-word="{{L2TargetWord}}" data-translate-to-code="{{translate_to_code}}"></script>
+		<script type="module" src="{{url_for('static', filename='js/app.js')}}" data-target-word="{{L2TargetWord}}" data-translate-to-code="{{translate_to_code}}" data-translate-from-code="{{translate_from_code}}"></script>
     
     <link rel="stylesheet" href="{{url_for('static', filename='css/select2.custom.css')}}" />
     

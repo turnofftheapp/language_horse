@@ -46,8 +46,8 @@ Talisman(app,
 	     content_security_policy=csp)
 
 
-@app.route('/canyousay/<string:L2TargetWord>/<string:translate_to_code>/', methods=['GET', 'POST'])
-def can_you_say(L2TargetWord, translate_to_code):
+@app.route('/canyousay/<string:L2TargetWord>/<string:translate_from_code>/<string:translate_to_code>', methods=['GET', 'POST'])
+def can_you_say(L2TargetWord, translate_from_code, translate_to_code,):
 
 	# Turn the list of tuples into a dictionary, reverse, dictionary
 	# And extract the friendly name for then language
@@ -56,11 +56,15 @@ def can_you_say(L2TargetWord, translate_to_code):
 	langDictReversed = {y:x for x,y in langDict.items()}
 	friendlyName = langDictReversed[translate_to_code]
 
+	friendlyNameFrom = langDictReversed[translate_from_code]
+
 	# This renders all of the appropriate information
 	return render_template('input.html',
 						   L2TargetWord=L2TargetWord,
 						   translate_to_code=translate_to_code,
-						   friendlyName=friendlyName)
+						   friendlyName=friendlyName,
+						   translate_from_code=translate_from_code,
+						   friendlyNameFrom=friendlyNameFrom)
 
 
 @app.route('/score/<string:translate_to_code>/<string:L2TargetWord>/<string:translate_from_code>', methods=['GET', 'POST'])

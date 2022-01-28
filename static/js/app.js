@@ -38,15 +38,18 @@ function getSyncScriptParams() {
          var scripts = document.getElementsByTagName('script');
          var lastScript = scripts[scripts.length-2];
          var scriptName = lastScript;
+         console.log(scriptName)
          return {"translateToLangCode": scriptName.getAttribute('data-translate-to-code'),
-                "L2TargetWord": scriptName.getAttribute('data-target-word')}
+                "L2TargetWord": scriptName.getAttribute('data-target-word'),
+                "translateFromLangCode": scriptName.getAttribute('data-translate-from-code')}
 }
 
 var specialEndpointData = getSyncScriptParams();
+console.log(specialEndpointData);
 
 // For Vanilla Javascript, Wrap everything in an initListeners() function and
 // Call this function at the end
-var initListeners = (L2TargetWord, translateToLangCode) => {
+var initListeners = (L2TargetWord, translateToLangCode, translateFromLangCode) => {
 
     // Do a check for getUserMedia, if not present then throw an error
     try {
@@ -424,13 +427,13 @@ var initListeners = (L2TargetWord, translateToLangCode) => {
     
     }
 
-    if (specialEndpointData.L2TargetWord && specialEndpointData.translateToLangCode) {
+    if (specialEndpointData.L2TargetWord && specialEndpointData.translateToLangCode && specialEndpointData.translateFromLangCode) {
 
       // Hide everything while we wait for results of translateLanguages()
       $('body').hide();
 
-      translateToLangCode = specialEndpointData.translateToLangCode;     
-      translateFromLangCode = 'en-US'
+      translateToLangCode = specialEndpointData.translateToLangCode;   
+      translateFromLangCode = specialEndpointData.translateFromLangCode;
       translateLanguages(specialEndpointData.L2TargetWord);
     }   
 }
@@ -493,4 +496,4 @@ function visualize(stream) {
 }
 
 
-initListeners(specialEndpointData.L2TargetWord, specialEndpointData.translateToLangCode);
+initListeners(specialEndpointData.L2TargetWord, specialEndpointData.translateToLangCode, specialEndpointData.translateFromLangCode);
